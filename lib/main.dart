@@ -12,7 +12,7 @@ void main() {
 
     theme: ThemeData(
       // Main theme of the app.
-      primarySwatch: Colors.blue,
+      primarySwatch: Colors.deepPurple,
     ),
 
     // Choose and run the homepage.
