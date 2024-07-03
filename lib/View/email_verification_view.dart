@@ -11,17 +11,22 @@ class EmailVerifyView extends StatefulWidget {
 class _EmailVerifyViewState extends State<EmailVerifyView> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const Text('Your email is not verified'),
-        TextButton(
-            onPressed: () async {
-              final user = FirebaseAuth.instance.currentUser;
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Email Verification'),
+      ),
+      body: Column(
+        children: [
+          const Text('Your email is not verified'),
+          TextButton(
+              onPressed: () async {
+                final user = FirebaseAuth.instance.currentUser;
 
-              await user?.sendEmailVerification();
-            },
-            child: const Text('Click here to verify your email.. 👋🏼')),
-      ],
+                await user?.sendEmailVerification();
+              },
+              child: const Text('Click here to verify your email.. 👋🏼')),
+        ],
+      ),
     );
   }
 }
