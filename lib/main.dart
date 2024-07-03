@@ -1,25 +1,32 @@
+// Note: if any "Configuration not found" error is there, go to the console website, authorization, and enable the configuration for ur security option "email and password, facebook, apple, twitter.... sign in".
+
+// To use firebase class.
 import 'package:firebase_core/firebase_core.dart';
+
 import 'package:flutter/material.dart';
 
-// To use the create user function.
+// To use the 'create user' function.
 import 'package:firebase_auth/firebase_auth.dart';
 
-// Use this when initializing the firebase.
+// Use this to initialize the firebase.
 import 'firebase_options.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      // choose and run the homepage
-      home: const HomeApp(),
-    ));
+    title: 'Notetaking App',
+
+    theme: ThemeData(
+      // Main theme of the app.
+      primarySwatch: Colors.blue,
+    ),
+
+    // Choose and run the homepage.
+    home: const HomeApp(),
+  ));
 }
 
-// use stl to quickly create a stateless widget.
+// Use stl to quickly create a stateless widget.
 class HomeApp extends StatefulWidget {
   const HomeApp({super.key});
 
@@ -28,8 +35,8 @@ class HomeApp extends StatefulWidget {
 }
 
 class _HomeAppState extends State<HomeApp> {
-  // creating 2 TextEditingController which take whatever input inside a textfield.
-  // declaring a variable as late makes sure that the variables will have values, but in the future.
+  // Creating 2 TextEditingController which takes whatever input inside a textfield.
+  // Declaring a variable as late make sure that the variables will have values, but in the future.
   late final TextEditingController _email;
   late final TextEditingController _password;
 
@@ -50,41 +57,42 @@ class _HomeAppState extends State<HomeApp> {
 
   @override
   Widget build(BuildContext context) {
-    // to create app bars and materials and such use Scaffold.
+    // To create app bars and materials and such use Scaffold.
     return Scaffold(
-      
-      // Shows on top of the app and make an instance of it
+      // Shows on top of the app and make an instance of it.
       appBar: AppBar(
-        // The text that'll show on top of the appBar.
+        // The text that'll show on the appBar.
         title: const Text('Register'),
-        ),
-        // inside that white area 'Canvas u might say'.
-        // Child is anything that u'll put inside the parent element, in this case TextButton is the parent and Text is the child.
-        // FutureBuilder is something that based on a condition it'll build the Widgets.
-        body: FutureBuilder(
-          future: Firebase.initializeApp(
-            options: DefaultFirebaseOptions.currentPlatform
-            ),
+      ),
 
-            // snapshot is a state, u can get the result of the future using it.
-          builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.done:
-                return Column(
+      // 'Body' is anything inside that white area 'Canvas u might say'.
+      // FutureBuilder is something that based on a condition will build the Widgets.
+      body: FutureBuilder(
+        future: Firebase.initializeApp(
+            options: DefaultFirebaseOptions.currentPlatform),
+
+        // snapshot is a state, u can get the result of the future using it.
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            // If the ConnectionState returned 'Done'...
+            case ConnectionState.done:
+              return Column(
                 children: [
                   // Creating 2 'textboxes' one for email and the second for password.
-                  // username textbox
+                  // Username textbox.
                   TextField(
-                    keyboardType: TextInputType.emailAddress,
+                    keyboardType: TextInputType
+                        .emailAddress, // Adds the '@' symbol on keyboard.
                     enableSuggestions: false,
                     autocorrect: false,
                     controller: _email,
-                    // Adding a placeholder.. 
+                    // Adding a placeholder..
                     decoration: const InputDecoration(
-                      hintText: 'Enter Email ', 
+                      hintText: 'Enter Email ',
                     ),
                   ),
-                  // password textbox
+
+                  // Password textbox.
                   TextField(
                     obscureText: true,
                     enableSuggestions: false,
@@ -94,29 +102,36 @@ class _HomeAppState extends State<HomeApp> {
                       hintText: 'Enter Password ',
                     ),
                   ),
-                  TextButton(onPressed: () async {
-                    // Must initialize Firebase before using it!
-                    await Firebase.initializeApp(
-                      options: DefaultFirebaseOptions.currentPlatform,
-                    );
-                    // Note: if any "Configuration not found" error is there, go to the console website and enable the configuration for ur security option "email and password, facebook, apple, twitter.... sign in"
-                    // as the user clicks on the button create 2 variables and get the text from the text boxes using the TextEditingController
-                    final email = _email.text;
-                    final password = _password.text;
-            
-                    // must put await as this is a Future function.
-                    await FirebaseAuth.instance.createUserWithEmailAndPassword(
-                        email: email,
-                        password: password
-                        );
-                      }, child: const Text('Register'),),
-                  ],
-                );
-                default:
-                  return const Text('Loading...');
-              }
-          }, 
-        ),
+
+                  TextButton(
+                    onPressed: () async {
+                      // Must initialize Firebase before using it, and must use 'async' in function declaration and 'await' when calling the initializeApp function!
+                      await Firebase.initializeApp(
+                        options: DefaultFirebaseOptions.currentPlatform,
+                      );
+
+                      // As the user clicks on the button create 2 variables and get the text from the text boxes using the TextEditingController.
+                      final inputEmail = _email.text;
+                      final inputPassword = _password.text;
+
+                      // Must put await as this is a Future function, again.
+                      await FirebaseAuth.instance
+                          .createUserWithEmailAndPassword(
+                              email: inputEmail, password: inputPassword);
+                    },
+
+                    // 'child' is anything that u'll put inside the parent element, in this case TextButton is the parent and Text is the child.
+                    child: const Text('Register'),
+                  ),
+                ],
+              );
+
+            // Otherwise return the text 'Loading'.
+            default:
+              return const Text('Loading...');
+          }
+        },
+      ),
     );
   }
 }
