@@ -21,12 +21,14 @@ class _RegisterViewState extends State<RegisterView> {
   // Declaring a variable as late make sure that the variables will have values, but in the future.
   late final TextEditingController _email;
   late final TextEditingController _password;
+  late final TextEditingController _repeatPassword;
 
   // But must create an initializer and a disposer manually.
   @override
   void initState() {
     _email = TextEditingController();
     _password = TextEditingController();
+    _repeatPassword = TextEditingController();
     super.initState();
   }
 
@@ -34,6 +36,7 @@ class _RegisterViewState extends State<RegisterView> {
   void dispose() {
     _email.dispose();
     _password.dispose();
+    _repeatPassword.dispose();
     super.dispose();
   }
 
@@ -51,7 +54,7 @@ class _RegisterViewState extends State<RegisterView> {
                 width: 450,
                 margin: const EdgeInsets.fromLTRB(0, 0, 0, 15),
                 // Creating 2 'textboxes' one for email and the second for password.
-                // Username textbox.
+                // Email textbox.
                 child: TextField(
                   keyboardType: TextInputType
                       .emailAddress, // Adds the '@' symbol on keyboard.
@@ -69,8 +72,9 @@ class _RegisterViewState extends State<RegisterView> {
                   ),
                 ),
               ),
-              SizedBox(
+              Container(
                 width: 450,
+                margin: const EdgeInsets.fromLTRB(0, 0, 0, 15),
                 // Password textbox.
                 child: TextField(
                   obscureText: true,
@@ -79,6 +83,19 @@ class _RegisterViewState extends State<RegisterView> {
                   controller: _password,
                   decoration: const InputDecoration(
                       hintText: 'Enter Password ',
+                      border: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(10.0)))),
+                ),
+              ),
+              SizedBox(
+                width: 450,
+                child: TextField(
+                  obscureText: true,
+                  enableSuggestions: false,
+                  controller: _repeatPassword,
+                  decoration: const InputDecoration(
+                      hintText: 'Repeat Password ',
                       border: OutlineInputBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(10.0)))),
@@ -96,12 +113,17 @@ class _RegisterViewState extends State<RegisterView> {
                     // As the user clicks on the button create 2 variables and get the text from the text boxes using the TextEditingController.
                     final inputEmail = _email.text;
                     final inputPassword = _password.text;
+                    final inputRepeatPassword = _repeatPassword.text;
 
                     // Must put await as this is a Future function, again.
                     try {
-                      await FirebaseAuth.instance
-                          .createUserWithEmailAndPassword(
-                              email: inputEmail, password: inputPassword);
+                      if (inputPassword == inputRepeatPassword) {
+                        await FirebaseAuth.instance
+                            .createUserWithEmailAndPassword(
+                                email: inputEmail, password: inputPassword);
+                      } else {
+                        print('Input same pass');
+                      }
                     } on FirebaseAuthException catch (e) {
                       if (e.code == 'invalid-email') {
                         // print('Invalid Email.');
