@@ -40,63 +40,77 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        // Creating 2 'textboxes' one for email and the second for password.
-        // Username textbox.
-        TextField(
-          keyboardType:
-              TextInputType.emailAddress, // Adds the '@' symbol on keyboard.
-          enableSuggestions: false,
-          autocorrect: false,
-          controller: _email,
-          // Adding a placeholder..
-          decoration: const InputDecoration(
-            hintText: 'Enter Email ',
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Login view'),
+      ),
+      body: Column(
+        children: [
+          // Creating 2 'textboxes' one for email and the second for password.
+          // Username textbox.
+          TextField(
+            keyboardType:
+                TextInputType.emailAddress, // Adds the '@' symbol on keyboard.
+            enableSuggestions: false,
+            autocorrect: false,
+            controller: _email,
+            // Adding a placeholder..
+            decoration: const InputDecoration(
+              hintText: 'Enter Email ',
+            ),
           ),
-        ),
 
-        // Password textbox.
-        TextField(
-          obscureText: true,
-          enableSuggestions: false,
-          autocorrect: false,
-          controller: _password,
-          decoration: const InputDecoration(
-            hintText: 'Enter Password ',
+          // Password textbox.
+          TextField(
+            obscureText: true,
+            enableSuggestions: false,
+            autocorrect: false,
+            controller: _password,
+            decoration: const InputDecoration(
+              hintText: 'Enter Password ',
+            ),
           ),
-        ),
 
-        TextButton(
-          onPressed: () async {
-            // Must initialize Firebase before using it, and must use 'async' in function declaration and 'await' when calling the initializeApp function!
-            await Firebase.initializeApp(
-              options: DefaultFirebaseOptions.currentPlatform,
-            );
+          // Login button.
+          TextButton(
+            onPressed: () async {
+              // Must initialize Firebase before using it, and must use 'async' in function declaration and 'await' when calling the initializeApp function!
+              await Firebase.initializeApp(
+                options: DefaultFirebaseOptions.currentPlatform,
+              );
 
-            // As the user clicks on the button create 2 variables and get the text from the text boxes using the TextEditingController.
-            final inputEmail = _email.text;
-            final inputPassword = _password.text;
+              // As the user clicks on the button create 2 variables and get the text from the text boxes using the TextEditingController.
+              final inputEmail = _email.text;
+              final inputPassword = _password.text;
 
-            // Must put await as this is a Future function, again.
-            try {
-              await FirebaseAuth.instance.signInWithEmailAndPassword(
-                  email: inputEmail, password: inputPassword);
-            } on FirebaseAuthException catch (e) /* Use on ClassName to specify the exception handler. */ {
-              // always use e.runtimeType to see where the exception is coming from.
+              // Must put await as this is a Future function, again.
+              try {
+                await FirebaseAuth.instance.signInWithEmailAndPassword(
+                    email: inputEmail, password: inputPassword);
+              } on FirebaseAuthException catch (e) /* Use on ClassName to specify the exception handler. */ {
+                // always use e.runtimeType to see where the exception is coming from.
 
-              if (e.code == 'user-not-found') {
-                print('User not found.');
-              } else if (e.code == 'wrong-password') {
-                print('Incorrect email or password');
+                if (e.code == 'user-not-found') {
+                  print('User not found.');
+                } else if (e.code == 'wrong-password') {
+                  print('Incorrect email or password');
+                }
               }
-            }
-          },
+            },
 
-          // 'child' is anything that u'll put inside the parent element, in this case TextButton is the parent and Text is the child.
-          child: const Text('Login'),
-        ),
-      ],
+            // 'child' is anything that u'll put inside the parent element, in this case TextButton is the parent and Text is the child.
+            child: const Text('Login'),
+          ),
+
+          // Second button.
+          TextButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil('/register/', (route) => false);
+              },
+              child: const Text('Not registered? Click here! 🖐🏼'))
+        ],
+      ),
     );
   }
 }

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:notetaking/View/login_view.dart';
+import 'package:notetaking/View/register_view.dart';
 import 'View/homepage_view.dart';
 
 void main() {
@@ -16,5 +17,11 @@ void main() {
 
     // Choose and run the homepage.
     home: const HomePage(),
+
+    // Create routes to swich from login to register and vise versa..
+    routes: {
+      "/login/": (context) => const LoginView(),
+      "/register/": (context) => const RegisterView(),
+    },
   ));
 }
