@@ -7,18 +7,17 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 // Use this to initialize the firebase.
-import '../../firebase_options.dart';
+import '../firebase_options.dart';
 
-// Use stf to quickly create a stateful widget.
-class LoginView extends StatefulWidget {
-  const LoginView({super.key});
+class RegisterView extends StatefulWidget {
+  const RegisterView({super.key});
 
   @override
-  State<LoginView> createState() => _LoginViewState();
+  State<RegisterView> createState() => _RegisterViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
-  // Creating 2 TextEditingController which takes whatever input inside a textfield.
+class _RegisterViewState extends State<RegisterView> {
+// Creating 2 TextEditingController which takes whatever input inside a textfield.
   // Declaring a variable as late make sure that the variables will have values, but in the future.
   late final TextEditingController _email;
   late final TextEditingController _password;
@@ -45,7 +44,7 @@ class _LoginViewState extends State<LoginView> {
       // Shows on top of the app and make an instance of it.
       appBar: AppBar(
         // The text that'll show on the appBar.
-        title: const Text('Login'),
+        title: const Text('Register'),
       ),
 
       // 'Body' is anything inside that white area 'Canvas u might say'.
@@ -99,21 +98,22 @@ class _LoginViewState extends State<LoginView> {
 
                       // Must put await as this is a Future function, again.
                       try {
-                        await FirebaseAuth.instance.signInWithEmailAndPassword(
-                            email: inputEmail, password: inputPassword);
-                      } on FirebaseAuthException catch (e) /* Use on ClassName to specify the exception handler. */ {
-                        // always use e.runtimeType to see where the exception is coming from.
-
-                        if (e.code == 'user-not-found') {
-                          print('User not found.');
-                        } else if (e.code == 'wrong-password') {
-                          print('Incorrect email or password');
+                        await FirebaseAuth.instance
+                            .createUserWithEmailAndPassword(
+                                email: inputEmail, password: inputPassword);
+                      } on FirebaseAuthException catch (e) {
+                        if (e.code == 'invalid-email') {
+                          print('Invalid Email.');
+                        } else if (e.code == 'weak-password') {
+                          print('Weak password');
+                        } else if (e.code == 'email-already-in-use') {
+                          print('Email already in use.');
                         }
                       }
                     },
 
                     // 'child' is anything that u'll put inside the parent element, in this case TextButton is the parent and Text is the child.
-                    child: const Text('Login'),
+                    child: const Text('Register'),
                   ),
                 ],
               );
