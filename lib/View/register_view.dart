@@ -39,91 +39,63 @@ class _RegisterViewState extends State<RegisterView> {
 
   @override
   Widget build(BuildContext context) {
-    // To create app bars and materials and such use Scaffold.
-    return Scaffold(
-      // Shows on top of the app and make an instance of it.
-      appBar: AppBar(
-        // The text that'll show on the appBar.
-        title: const Text('Register'),
-      ),
+    return Column(
+      children: [
+        // Creating 2 'textboxes' one for email and the second for password.
+        // Username textbox.
+        TextField(
+          keyboardType:
+              TextInputType.emailAddress, // Adds the '@' symbol on keyboard.
+          enableSuggestions: false,
+          autocorrect: false,
+          controller: _email,
+          // Adding a placeholder..
+          decoration: const InputDecoration(
+            hintText: 'Enter Email ',
+          ),
+        ),
 
-      // 'Body' is anything inside that white area 'Canvas u might say'.
-      // FutureBuilder is something that based on a condition will build the Widgets.
-      body: FutureBuilder(
-        future: Firebase.initializeApp(
-            options: DefaultFirebaseOptions.currentPlatform),
+        // Password textbox.
+        TextField(
+          obscureText: true,
+          enableSuggestions: false,
+          autocorrect: false,
+          controller: _password,
+          decoration: const InputDecoration(
+            hintText: 'Enter Password ',
+          ),
+        ),
 
-        // snapshot is a state, u can get the result of the future using it.
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            // If the ConnectionState returned 'Done'...
-            case ConnectionState.done:
-              return Column(
-                children: [
-                  // Creating 2 'textboxes' one for email and the second for password.
-                  // Username textbox.
-                  TextField(
-                    keyboardType: TextInputType
-                        .emailAddress, // Adds the '@' symbol on keyboard.
-                    enableSuggestions: false,
-                    autocorrect: false,
-                    controller: _email,
-                    // Adding a placeholder..
-                    decoration: const InputDecoration(
-                      hintText: 'Enter Email ',
-                    ),
-                  ),
+        TextButton(
+          onPressed: () async {
+            // Must initialize Firebase before using it, and must use 'async' in function declaration and 'await' when calling the initializeApp function!
+            await Firebase.initializeApp(
+              options: DefaultFirebaseOptions.currentPlatform,
+            );
 
-                  // Password textbox.
-                  TextField(
-                    obscureText: true,
-                    enableSuggestions: false,
-                    autocorrect: false,
-                    controller: _password,
-                    decoration: const InputDecoration(
-                      hintText: 'Enter Password ',
-                    ),
-                  ),
+            // As the user clicks on the button create 2 variables and get the text from the text boxes using the TextEditingController.
+            final inputEmail = _email.text;
+            final inputPassword = _password.text;
 
-                  TextButton(
-                    onPressed: () async {
-                      // Must initialize Firebase before using it, and must use 'async' in function declaration and 'await' when calling the initializeApp function!
-                      await Firebase.initializeApp(
-                        options: DefaultFirebaseOptions.currentPlatform,
-                      );
+            // Must put await as this is a Future function, again.
+            try {
+              await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                  email: inputEmail, password: inputPassword);
+            } on FirebaseAuthException catch (e) {
+              if (e.code == 'invalid-email') {
+                print('Invalid Email.');
+              } else if (e.code == 'weak-password') {
+                print('Weak password');
+              } else if (e.code == 'email-already-in-use') {
+                print('Email already in use.');
+              }
+            }
+          },
 
-                      // As the user clicks on the button create 2 variables and get the text from the text boxes using the TextEditingController.
-                      final inputEmail = _email.text;
-                      final inputPassword = _password.text;
-
-                      // Must put await as this is a Future function, again.
-                      try {
-                        await FirebaseAuth.instance
-                            .createUserWithEmailAndPassword(
-                                email: inputEmail, password: inputPassword);
-                      } on FirebaseAuthException catch (e) {
-                        if (e.code == 'invalid-email') {
-                          print('Invalid Email.');
-                        } else if (e.code == 'weak-password') {
-                          print('Weak password');
-                        } else if (e.code == 'email-already-in-use') {
-                          print('Email already in use.');
-                        }
-                      }
-                    },
-
-                    // 'child' is anything that u'll put inside the parent element, in this case TextButton is the parent and Text is the child.
-                    child: const Text('Register'),
-                  ),
-                ],
-              );
-
-            // Otherwise return the text 'Loading'.
-            default:
-              return const Text('Loading...');
-          }
-        },
-      ),
+          // 'child' is anything that u'll put inside the parent element, in this case TextButton is the parent and Text is the child.
+          child: const Text('Register'),
+        ),
+      ],
     );
   }
 }
