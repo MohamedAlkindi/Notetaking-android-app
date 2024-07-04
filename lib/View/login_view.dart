@@ -1,3 +1,4 @@
+import 'package:Notetaking/View/notes_view.dart';
 import 'package:flutter/material.dart';
 
 // To use firebase class.
@@ -92,6 +93,8 @@ class _LoginViewState extends State<LoginView> {
                   try {
                     await FirebaseAuth.instance.signInWithEmailAndPassword(
                         email: inputEmail, password: inputPassword);
+                    Navigator.of(context)
+                        .pushNamedAndRemoveUntil('/notes/', (_) => false);
                   } on FirebaseAuthException catch (e) {
                     if (e.code == 'user-not-found') {
                       // print('User not found.');
