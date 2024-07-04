@@ -1,3 +1,4 @@
+import 'package:Notetaking/Constants/routes.dart';
 import 'package:Notetaking/View/notes_view.dart';
 import 'package:flutter/material.dart';
 
@@ -94,10 +95,15 @@ class _LoginViewState extends State<LoginView> {
                   try {
                     await FirebaseAuth.instance.signInWithEmailAndPassword(
                         email: inputEmail, password: inputPassword);
-                    Navigator.of(context)
-                        .pushNamedAndRemoveUntil('/notes/', (_) => false);
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      notesRoute,
+                      (_) => false,
+                    );
                   } on FirebaseAuthException catch (e) {
-                    showErrorDialog(context, e.code);
+                    showErrorDialog(
+                      context,
+                      e.code,
+                    );
                   }
                 },
                 style: TextButton.styleFrom(
@@ -109,8 +115,10 @@ class _LoginViewState extends State<LoginView> {
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context)
-                    .pushNamedAndRemoveUntil('/register/', (route) => false);
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  registerRoute,
+                  (route) => false,
+                );
               },
               child: const Text('Not registered? Click here! 🖐🏼'),
             ),

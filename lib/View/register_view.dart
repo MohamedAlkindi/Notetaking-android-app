@@ -7,6 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 // Use this to initialize the firebase.
+import '../Constants/routes.dart';
 import '../ErrorMessages/error_functions.dart';
 import '../firebase_options.dart';
 
@@ -138,7 +139,7 @@ class _RegisterViewState extends State<RegisterView> {
             TextButton(
                 onPressed: () {
                   Navigator.of(context)
-                      .pushNamedAndRemoveUntil('/login/', (route) => false);
+                      .pushNamedAndRemoveUntil(loginRoute, (route) => false);
                 },
                 child: const Text('Already a user? Click here! 🖐🏼')),
           ],

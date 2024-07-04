@@ -4,6 +4,7 @@ import 'package:Notetaking/View/notes_view.dart';
 import 'package:flutter/material.dart';
 import 'package:Notetaking/View/login_view.dart';
 import 'package:Notetaking/View/register_view.dart';
+import 'Constants/routes.dart';
 import 'View/homepage_view.dart';
 
 void main() {
@@ -25,9 +26,9 @@ void main() {
 
     // Create routes to swich from login to register and vise versa..
     routes: {
-      "/login/": (context) => const LoginView(),
-      "/register/": (context) => const RegisterView(),
-      "/notes/": (context) => const NotesView(),
+      loginRoute: (context) => const LoginView(),
+      registerRoute: (context) => const RegisterView(),
+      notesRoute: (context) => const NotesView(),
     },
   ));
 }
