@@ -3,7 +3,7 @@
     package="com.example.notetaking">
    <uses-sdk tools:overrideLibrary="io.flutter.plugins.firebase.analytics"/>
    <application
-        android:label="notetaking"
+        android:label="Notetaking"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
