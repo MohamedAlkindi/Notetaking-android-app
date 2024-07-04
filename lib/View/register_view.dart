@@ -7,6 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 // Use this to initialize the firebase.
+import '../ErrorMessages/error_functions.dart';
 import '../firebase_options.dart';
 
 class RegisterView extends StatefulWidget {
@@ -122,13 +123,7 @@ class _RegisterViewState extends State<RegisterView> {
                       // print('Input same pass');
                     }
                   } on FirebaseAuthException catch (e) {
-                    if (e.code == 'invalid-email') {
-                      // print('Invalid Email.');
-                    } else if (e.code == 'weak-password') {
-                      // print('Weak password');
-                    } else if (e.code == 'email-already-in-use') {
-                      // print('Email already in use.');
-                    }
+                    showErrorDialog(context, e.code);
                   }
                 },
 

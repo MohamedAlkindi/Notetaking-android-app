@@ -8,6 +8,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 // Use this to initialize the firebase.
+import '../ErrorMessages/error_functions.dart';
 import '../firebase_options.dart';
 
 // Use stf to quickly create a stateful widget.
@@ -96,11 +97,7 @@ class _LoginViewState extends State<LoginView> {
                     Navigator.of(context)
                         .pushNamedAndRemoveUntil('/notes/', (_) => false);
                   } on FirebaseAuthException catch (e) {
-                    if (e.code == 'user-not-found') {
-                      // print('User not found.');
-                    } else if (e.code == 'wrong-password') {
-                      // print('Incorrect email or password');
-                    }
+                    showErrorDialog(context, e.code);
                   }
                 },
                 style: TextButton.styleFrom(
