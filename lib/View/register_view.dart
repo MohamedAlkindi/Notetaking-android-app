@@ -8,7 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 // Use this to initialize the firebase.
 import '../Constants/routes.dart';
-import '../ErrorMessages/error_functions.dart';
+import '../Error_Handling/error_functions.dart';
 import '../firebase_options.dart';
 
 class RegisterView extends StatefulWidget {

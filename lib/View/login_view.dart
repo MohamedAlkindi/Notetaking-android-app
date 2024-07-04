@@ -9,7 +9,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 // Use this to initialize the firebase.
-import '../ErrorMessages/error_functions.dart';
+import '../Error_Handling/error_functions.dart';
 import '../firebase_options.dart';
 
 // Use stf to quickly create a stateful widget.
