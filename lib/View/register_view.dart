@@ -121,10 +121,12 @@ class _RegisterViewState extends State<RegisterView> {
                           .createUserWithEmailAndPassword(
                               email: inputEmail, password: inputPassword);
                     } else {
-                      // print('Input same pass');
+                      showErrorDialog(context, "Passwords don't match.");
                     }
                   } on FirebaseAuthException catch (e) {
                     showErrorDialog(context, e.code);
+                  } catch (e) {
+                    showErrorDialog(context, e.toString());
                   }
                 },
 

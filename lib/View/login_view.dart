@@ -100,10 +100,10 @@ class _LoginViewState extends State<LoginView> {
                       (_) => false,
                     );
                   } on FirebaseAuthException catch (e) {
-                    showErrorDialog(
-                      context,
-                      e.code,
-                    );
+                    showErrorDialog(context, e.code);
+                  } catch (e) {
+                    // handle any other errors.
+                    showErrorDialog(context, e.toString());
                   }
                 },
                 style: TextButton.styleFrom(
