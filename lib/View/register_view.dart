@@ -1,3 +1,4 @@
+import 'package:Notetaking/View/email_verification_view.dart';
 import 'package:flutter/material.dart';
 
 // To use firebase class.
@@ -119,7 +120,16 @@ class _RegisterViewState extends State<RegisterView> {
                     if (inputPassword == inputRepeatPassword) {
                       await FirebaseAuth.instance
                           .createUserWithEmailAndPassword(
-                              email: inputEmail, password: inputPassword);
+                        email: inputEmail,
+                        password: inputPassword,
+                      );
+                      final user = FirebaseAuth.instance.currentUser;
+                      await user?.sendEmailVerification();
+
+                      // Use pushNamed so u give the user an option to go back if he entered wrong details.
+                      Navigator.of(context).pushNamed(
+                        emailVerifyRoute,
+                      );
                     } else {
                       showErrorDialog(context, "Passwords don't match.");
                     }
