@@ -43,17 +43,24 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Login'),
+        title: const Text(
+          'Login',
+        ),
       ),
       body: Center(
         child: Column(
           // makes all the column elements in the middle.
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Image.asset(
+              'assets/images/login.png',
+              height: 180,
+            ),
             Container(
               width: 450,
-              margin: const EdgeInsets.fromLTRB(0, 0, 0, 15),
+              margin: const EdgeInsets.fromLTRB(0, 25, 0, 15),
               child: TextField(
                 keyboardType: TextInputType.emailAddress,
                 enableSuggestions: false,
@@ -77,9 +84,13 @@ class _LoginViewState extends State<LoginView> {
                 autocorrect: false,
                 controller: _password,
                 decoration: const InputDecoration(
-                    hintText: 'Enter Password ',
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)))),
+                  hintText: 'Enter Password ',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
+                    ),
+                  ),
+                ),
               ),
             ),
             Container(
@@ -120,7 +131,9 @@ class _LoginViewState extends State<LoginView> {
                   backgroundColor: const Color.fromARGB(224, 199, 201, 228),
                   padding: const EdgeInsets.fromLTRB(40, 15, 40, 15),
                 ),
-                child: const Text('Login'),
+                child: const Text(
+                  'Login',
+                ),
               ),
             ),
             TextButton(
