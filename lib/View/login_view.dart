@@ -1,5 +1,4 @@
 import 'package:Notetaking/Constants/routes.dart';
-import 'package:Notetaking/View/notes_view.dart';
 import 'package:flutter/material.dart';
 
 // To use firebase class.

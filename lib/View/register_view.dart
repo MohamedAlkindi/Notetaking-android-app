@@ -1,4 +1,3 @@
-import 'package:Notetaking/View/email_verification_view.dart';
 import 'package:flutter/material.dart';
 
 // To use firebase class.

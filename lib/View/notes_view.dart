@@ -1,9 +1,8 @@
 import 'package:Notetaking/Constants/routes.dart';
-import 'package:Notetaking/View/login_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 // devtools is an alias, only get log from that package 'will be used instead of print()'
-import 'dart:developer' as devtools show log;
+// import 'dart:developer' as devtools show log;
 
 // An enum that has items which will then be in a popup menu items.
 enum MenuAction { logout }
