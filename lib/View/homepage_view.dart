@@ -1,11 +1,10 @@
-// Main focus of this widget is to initialize the firebase once and for all views.
 import 'package:Notetaking/View/notes_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:Notetaking/View/email_verification_view.dart';
-import 'package:Notetaking/View/login_view.dart';
 
+import '../Constants/routes.dart';
 import '../firebase_options.dart';
 
 class HomePage extends StatelessWidget {
@@ -31,7 +30,62 @@ class HomePage extends StatelessWidget {
                 return const EmailVerifyView();
               }
             } else {
-              return const LoginView();
+              // If the user isn't signed in already then show the homepage.
+              return Scaffold(
+                backgroundColor: Colors.white,
+                body: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/images/notes.jpeg',
+                        height: 250,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.fromLTRB(0, 20, 80, 0),
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                backgroundColor:
+                                    const Color.fromARGB(40, 15, 40, 15),
+                                padding:
+                                    const EdgeInsets.fromLTRB(28, 15, 28, 15),
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).pushNamedAndRemoveUntil(
+                                  loginRoute,
+                                  (route) => false,
+                                );
+                              },
+                              child: const Text('Login'),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                backgroundColor:
+                                    const Color.fromARGB(40, 15, 40, 15),
+                                padding:
+                                    const EdgeInsets.fromLTRB(20, 15, 20, 15),
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).pushNamedAndRemoveUntil(
+                                  registerRoute,
+                                  (route) => false,
+                                );
+                              },
+                              child: const Text('Register'),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              );
             }
 
           // Otherwise show the text 'Loading'.

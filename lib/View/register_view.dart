@@ -45,15 +45,24 @@ class _RegisterViewState extends State<RegisterView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Register')),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text(
+          'Register',
+        ),
+      ),
       body: Center(
         child: Column(
           // makes all the column elements in the middle.
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Image.asset(
+              'assets/images/register.png',
+              height: 140,
+            ),
             Container(
               width: 450,
-              margin: const EdgeInsets.fromLTRB(0, 0, 0, 15),
+              margin: const EdgeInsets.fromLTRB(0, 25, 0, 15),
               // Creating 2 'textboxes' one for email and the second for password.
               // Email textbox.
               child: TextField(
@@ -83,9 +92,13 @@ class _RegisterViewState extends State<RegisterView> {
                 autocorrect: false,
                 controller: _password,
                 decoration: const InputDecoration(
-                    hintText: 'Enter Password ',
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)))),
+                  hintText: 'Enter Password ',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
+                    ),
+                  ),
+                ),
               ),
             ),
             SizedBox(
@@ -95,9 +108,13 @@ class _RegisterViewState extends State<RegisterView> {
                 enableSuggestions: false,
                 controller: _repeatPassword,
                 decoration: const InputDecoration(
-                    hintText: 'Repeat Password ',
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)))),
+                  hintText: 'Repeat Password ',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
+                    ),
+                  ),
+                ),
               ),
             ),
             Container(
@@ -144,15 +161,20 @@ class _RegisterViewState extends State<RegisterView> {
                   padding: const EdgeInsets.fromLTRB(40, 15, 40, 15),
                 ),
                 // 'child' is anything that u'll put inside the parent element, in this case TextButton is the parent and Text is the child.
-                child: const Text('Register'),
+                child: const Text(
+                  'Register',
+                ),
               ),
             ),
             TextButton(
-                onPressed: () {
-                  Navigator.of(context)
-                      .pushNamedAndRemoveUntil(loginRoute, (route) => false);
-                },
-                child: const Text('Already a user? Click here! 🖐🏼')),
+              onPressed: () {
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil(loginRoute, (route) => false);
+              },
+              child: const Text(
+                'Already a user? Click here! 🖐🏼',
+              ),
+            ),
           ],
         ),
       ),
