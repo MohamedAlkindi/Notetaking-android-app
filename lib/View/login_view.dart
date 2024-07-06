@@ -133,7 +133,13 @@ class _LoginViewState extends State<LoginView> {
                       }
                     }
                   } on FirebaseAuthException catch (e) {
-                    showErrorDialog(context, e.code);
+                    if (e.code == "network-request-failed") {
+                      showErrorDialog(
+                          context, "Please check your internet connection.");
+                    } else {
+                      showErrorDialog(
+                          context, "Please check your email and/or password.");
+                    }
                   } catch (e) {
                     // handle any other errors.
                     showErrorDialog(context, e.toString());

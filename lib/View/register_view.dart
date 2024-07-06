@@ -149,9 +149,13 @@ class _RegisterViewState extends State<RegisterView> {
                       showErrorDialog(context, "Passwords don't match.");
                     }
                   } on FirebaseAuthException catch (e) {
-                    showErrorDialog(context, e.code);
-                  } catch (e) {
-                    showErrorDialog(context, e.toString());
+                    if (e.code == "network-request-failed") {
+                      showErrorDialog(
+                          context, "Please check your internet connection.");
+                    } else {
+                      showErrorDialog(
+                          context, "Please check your email and/or password.");
+                    }
                   }
                 },
                 style: TextButton.styleFrom(
