@@ -12,7 +12,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // To create app bars and materials and such use Scaffold.
+    // Creates a widget or return one based on a condition in the 'Snapshot', takes 2 parameters 'future' which has the Future<> function, and 'builder' which will be used with the snapshot to return the widget.
     return FutureBuilder(
       future: Firebase.initializeApp(
           options: DefaultFirebaseOptions.currentPlatform),
@@ -31,11 +31,16 @@ class HomePage extends StatelessWidget {
               }
             } else {
               // If the user isn't signed in already then show the homepage.
+              // To create app bars and materials and such use Scaffold.
+              // Put ur mouse cursor over it to see what u can add to it.
               return Scaffold(
                 backgroundColor: Colors.white,
                 body: Center(
                   child: Column(
+                    // makes all the column elements in the middle.
                     mainAxisAlignment: MainAxisAlignment.center,
+
+                    // 'Children' or 'child' is anything that u'll put inside the parent element.
                     children: [
                       Image.asset(
                         'assets/images/notes.jpeg',
@@ -54,12 +59,15 @@ class HomePage extends StatelessWidget {
                                     const EdgeInsets.fromLTRB(28, 15, 28, 15),
                               ),
                               onPressed: () {
+                                // A navigator is a 'router' that routes the user to another view, using pushNamedAndRemoveUntil() function it navigates to another view and remove current view from the stack. 'cursor on function for more info...'
                                 Navigator.of(context).pushNamedAndRemoveUntil(
                                   loginRoute,
                                   (route) => false,
                                 );
                               },
-                              child: const Text('Login'),
+                              child: const Text(
+                                'Login',
+                              ),
                             ),
                           ),
                           Container(
@@ -77,7 +85,9 @@ class HomePage extends StatelessWidget {
                                   (route) => false,
                                 );
                               },
-                              child: const Text('Register'),
+                              child: const Text(
+                                'Register',
+                              ),
                             ),
                           ),
                         ],
@@ -88,7 +98,7 @@ class HomePage extends StatelessWidget {
               );
             }
 
-          // Otherwise show the text 'Loading'.
+          // Otherwise show a visual indicator 'when the connection is slow'.
           default:
             return const CircularProgressIndicator();
         }

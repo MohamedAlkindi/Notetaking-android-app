@@ -1,5 +1,6 @@
-import 'package:Notetaking/Constants/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:Notetaking/Constants/routes.dart';
+import '../Error_Handling/error_functions.dart';
 
 // To use firebase class.
 import 'package:firebase_core/firebase_core.dart';
@@ -8,7 +9,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 // Use this to initialize the firebase.
-import '../Error_Handling/error_functions.dart';
 import '../firebase_options.dart';
 
 // Use stf to quickly create a stateful widget.
@@ -51,13 +51,15 @@ class _LoginViewState extends State<LoginView> {
       ),
       body: Center(
         child: Column(
-          // makes all the column elements in the middle.
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
               'assets/images/login.png',
               height: 180,
             ),
+
+            // Creating 2 'textboxes' one for email and the second for password, each in their own 'Container' to put some styling to them.
+            // Email textfield.
             Container(
               width: 450,
               margin: const EdgeInsets.fromLTRB(0, 25, 0, 15),
@@ -76,6 +78,9 @@ class _LoginViewState extends State<LoginView> {
                 ),
               ),
             ),
+
+            // 'SizedBox' is more suitable if u won't use properties of 'Container'. Otherwise use 'Container' as it has more properties to work with.
+            // Password textfield.
             SizedBox(
               width: 450,
               child: TextField(
@@ -93,15 +98,21 @@ class _LoginViewState extends State<LoginView> {
                 ),
               ),
             ),
+
+            // Login button.
             Container(
               margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: TextButton(
                 onPressed: () async {
+                  // Must initialize Firebase before using it, and must use 'async' in function declaration and 'await' when calling the initializeApp, because it's a Future<> function!
                   await Firebase.initializeApp(
                     options: DefaultFirebaseOptions.currentPlatform,
                   );
+
+                  // As the user clicks on the button create 2 variables and get the text from the text boxes using the TextEditingController.
                   final inputEmail = _email.text;
                   final inputPassword = _password.text;
+
                   try {
                     await FirebaseAuth.instance.signInWithEmailAndPassword(
                         email: inputEmail, password: inputPassword);
@@ -115,6 +126,7 @@ class _LoginViewState extends State<LoginView> {
                           (_) => false,
                         );
                       } else {
+                        // Use pushNamed so u give the user an option to go back if he entered wrong details.
                         Navigator.of(context).pushNamed(
                           emailVerifyRoute,
                         );
@@ -136,6 +148,8 @@ class _LoginViewState extends State<LoginView> {
                 ),
               ),
             ),
+
+            // Register view button.
             TextButton(
               onPressed: () {
                 Navigator.of(context).pushNamedAndRemoveUntil(

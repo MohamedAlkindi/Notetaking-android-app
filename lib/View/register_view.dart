@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../Constants/routes.dart';
+import '../Error_Handling/error_functions.dart';
 
 // To use firebase class.
 import 'package:firebase_core/firebase_core.dart';
@@ -7,8 +9,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 // Use this to initialize the firebase.
-import '../Constants/routes.dart';
-import '../Error_Handling/error_functions.dart';
 import '../firebase_options.dart';
 
 class RegisterView extends StatefulWidget {
@@ -19,13 +19,10 @@ class RegisterView extends StatefulWidget {
 }
 
 class _RegisterViewState extends State<RegisterView> {
-// Creating 2 TextEditingController which takes whatever input inside a textfield.
-  // Declaring a variable as late make sure that the variables will have values, but in the future.
   late final TextEditingController _email;
   late final TextEditingController _password;
   late final TextEditingController _repeatPassword;
 
-  // But must create an initializer and a disposer manually.
   @override
   void initState() {
     _email = TextEditingController();
@@ -53,7 +50,6 @@ class _RegisterViewState extends State<RegisterView> {
       ),
       body: Center(
         child: Column(
-          // makes all the column elements in the middle.
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
@@ -63,8 +59,8 @@ class _RegisterViewState extends State<RegisterView> {
             Container(
               width: 450,
               margin: const EdgeInsets.fromLTRB(0, 25, 0, 15),
-              // Creating 2 'textboxes' one for email and the second for password.
-              // Email textbox.
+
+              // Email textfield.
               child: TextField(
                 keyboardType: TextInputType
                     .emailAddress, // Adds the '@' symbol on keyboard.
@@ -82,6 +78,8 @@ class _RegisterViewState extends State<RegisterView> {
                 ),
               ),
             ),
+
+            // Password textField.
             Container(
               width: 450,
               margin: const EdgeInsets.fromLTRB(0, 0, 0, 15),
@@ -101,6 +99,8 @@ class _RegisterViewState extends State<RegisterView> {
                 ),
               ),
             ),
+
+            // Repeat pass textField.
             SizedBox(
               width: 450,
               child: TextField(
@@ -117,21 +117,20 @@ class _RegisterViewState extends State<RegisterView> {
                 ),
               ),
             ),
+
+            // Register button.
             Container(
               margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
               child: TextButton(
                 onPressed: () async {
-                  // Must initialize Firebase before using it, and must use 'async' in function declaration and 'await' when calling the initializeApp function!
                   await Firebase.initializeApp(
                     options: DefaultFirebaseOptions.currentPlatform,
                   );
 
-                  // As the user clicks on the button create 2 variables and get the text from the text boxes using the TextEditingController.
                   final inputEmail = _email.text;
                   final inputPassword = _password.text;
                   final inputRepeatPassword = _repeatPassword.text;
 
-                  // Must put await as this is a Future function, again.
                   try {
                     if (inputPassword == inputRepeatPassword) {
                       await FirebaseAuth.instance
@@ -140,9 +139,9 @@ class _RegisterViewState extends State<RegisterView> {
                         password: inputPassword,
                       );
                       final user = FirebaseAuth.instance.currentUser;
+                      // Send a verification email to the user.
                       await user?.sendEmailVerification();
 
-                      // Use pushNamed so u give the user an option to go back if he entered wrong details.
                       Navigator.of(context).pushNamed(
                         emailVerifyRoute,
                       );
@@ -155,17 +154,17 @@ class _RegisterViewState extends State<RegisterView> {
                     showErrorDialog(context, e.toString());
                   }
                 },
-
                 style: TextButton.styleFrom(
                   backgroundColor: const Color.fromARGB(224, 199, 201, 228),
                   padding: const EdgeInsets.fromLTRB(40, 15, 40, 15),
                 ),
-                // 'child' is anything that u'll put inside the parent element, in this case TextButton is the parent and Text is the child.
                 child: const Text(
                   'Register',
                 ),
               ),
             ),
+
+            // Login view button.
             TextButton(
               onPressed: () {
                 Navigator.of(context)
