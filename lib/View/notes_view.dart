@@ -1,12 +1,10 @@
 import 'package:Notetaking/Dialogs/logout_dialog.dart';
+import 'package:Notetaking/enums/menu_action.dart';
 import 'package:flutter/material.dart';
 import 'package:Notetaking/Constants/routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // devtools is an alias, only get log from that package 'will be used instead of print()'
 // import 'dart:developer' as devtools show log;
-
-// An enum that has items which will then be in a popup menu items.
-enum MenuAction { logout }
 
 class NotesView extends StatefulWidget {
   const NotesView({super.key});
