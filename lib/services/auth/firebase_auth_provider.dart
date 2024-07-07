@@ -1,4 +1,7 @@
 // Implement the auth_user class.
+import 'package:Notetaking/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
+
 import 'auth_user.dart';
 
 // Because we'll use AuthUser which uses this file and in reverse.
@@ -96,5 +99,12 @@ class FirebaseAuthProvider implements AuthProvider {
     } else {
       throw UserNotLoggedInAuthExceptions();
     }
+  }
+
+  // Must initialize Firebase before using it, and must use 'async' in function declaration and 'await' when calling the initializeApp, because it's a Future<> function!
+  @override
+  Future<void> initializer() async {
+    await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform);
   }
 }

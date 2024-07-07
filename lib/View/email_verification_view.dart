@@ -1,4 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:Notetaking/View/register_view.dart';
+import 'package:Notetaking/services/auth/auth_service.dart';
 import 'package:flutter/material.dart';
 
 class EmailVerifyView extends StatefulWidget {
@@ -37,8 +38,7 @@ class _EmailVerifyViewState extends State<EmailVerifyView> {
               margin: const EdgeInsets.fromLTRB(0, 20, 0, 0),
               child: TextButton(
                 onPressed: () async {
-                  final user = FirebaseAuth.instance.currentUser;
-                  await user?.sendEmailVerification();
+                  await AuthService.fireBase().sendEmailVerification();
                 },
                 style: TextButton.styleFrom(
                   backgroundColor: const Color.fromARGB(224, 199, 201, 228),

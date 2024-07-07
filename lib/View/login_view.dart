@@ -1,15 +1,8 @@
+import 'package:Notetaking/services/auth/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:Notetaking/Constants/routes.dart';
 import '../Error_Handling/error_functions.dart';
-
-// To use firebase class.
-import 'package:firebase_core/firebase_core.dart';
-
-// To use the 'create user' function.
-import 'package:firebase_auth/firebase_auth.dart';
-
-// Use this to initialize the firebase.
-import '../firebase_options.dart';
+import '../services/auth/auth_exceptions.dart';
 
 // Use stf to quickly create a stateful widget.
 class LoginView extends StatefulWidget {
@@ -104,23 +97,20 @@ class _LoginViewState extends State<LoginView> {
               margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: TextButton(
                 onPressed: () async {
-                  // Must initialize Firebase before using it, and must use 'async' in function declaration and 'await' when calling the initializeApp, because it's a Future<> function!
-                  await Firebase.initializeApp(
-                    options: DefaultFirebaseOptions.currentPlatform,
-                  );
-
                   // As the user clicks on the button create 2 variables and get the text from the text boxes using the TextEditingController.
                   final inputEmail = _email.text;
                   final inputPassword = _password.text;
 
                   try {
-                    await FirebaseAuth.instance.signInWithEmailAndPassword(
-                        email: inputEmail, password: inputPassword);
+                    await AuthService.fireBase().logIn(
+                      email: inputEmail,
+                      password: inputPassword,
+                    );
 
-                    final loggedinUser = FirebaseAuth.instance.currentUser;
+                    final loggedinUser = AuthService.fireBase().currentUser;
 
                     if (loggedinUser != null) {
-                      if (loggedinUser.emailVerified) {
+                      if (loggedinUser.isEmailVerified) {
                         Navigator.of(context).pushNamedAndRemoveUntil(
                           notesRoute,
                           (_) => false,
@@ -132,17 +122,14 @@ class _LoginViewState extends State<LoginView> {
                         );
                       }
                     }
-                  } on FirebaseAuthException catch (e) {
-                    if (e.code == "network-request-failed") {
-                      showErrorDialog(
-                          context, "Please check your internet connection.");
-                    } else {
-                      showErrorDialog(
-                          context, "Please check your email and/or password.");
-                    }
-                  } catch (e) {
-                    // handle any other errors.
-                    showErrorDialog(context, e.toString());
+                  } on NetworkExceptions {
+                    showErrorDialog(
+                        context, "Please check your internet connection.");
+                  } on AuthExceptions {
+                    showErrorDialog(
+                        context, "Please check your input details.");
+                  } on GenericAuthException {
+                    showErrorDialog(context, "An error has happened!");
                   }
                 },
                 style: TextButton.styleFrom(

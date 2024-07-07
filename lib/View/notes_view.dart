@@ -1,8 +1,8 @@
 import 'package:Notetaking/Dialogs/logout_dialog.dart';
 import 'package:Notetaking/enums/menu_action.dart';
+import 'package:Notetaking/services/auth/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:Notetaking/Constants/routes.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 // devtools is an alias, only get log from that package 'will be used instead of print()'
 // import 'dart:developer' as devtools show log;
 
@@ -39,7 +39,7 @@ class _NotesViewState extends State<NotesView> {
                   bool shouldLogout = await showLogoutDialog(context);
 
                   if (shouldLogout) {
-                    await FirebaseAuth.instance.signOut();
+                    await AuthService.fireBase().logOut();
                     Navigator.of(context).pushNamedAndRemoveUntil(
                       loginRoute,
                       (_) => false,

@@ -1,11 +1,8 @@
 import 'package:Notetaking/View/notes_view.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:Notetaking/services/auth/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:Notetaking/View/email_verification_view.dart';
-
-import '../Constants/routes.dart';
-import '../firebase_options.dart';
+import 'package:Notetaking/Constants/routes.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -14,17 +11,16 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     // Creates a widget or return one based on a condition in the 'Snapshot', takes 2 parameters 'future' which has the Future<> function, and 'builder' which will be used with the snapshot to return the widget.
     return FutureBuilder(
-      future: Firebase.initializeApp(
-          options: DefaultFirebaseOptions.currentPlatform),
+      future: AuthService.fireBase().initializer(),
 
       // snapshot is a state, u can get the result of the future using it.
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           // If the ConnectionState returned 'Done'...
           case ConnectionState.done:
-            final user = FirebaseAuth.instance.currentUser;
+            final user = AuthService.fireBase().currentUser;
             if (user != null) {
-              if (user.emailVerified) {
+              if (user.isEmailVerified) {
                 return const NotesView();
               } else {
                 return const EmailVerifyView();
