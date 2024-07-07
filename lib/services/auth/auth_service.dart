@@ -1,8 +1,11 @@
 import 'auth_provider.dart';
 import 'auth_user.dart';
 
+// This class that'll be directly contacting the UI. so it implements the AuthProvider and giving it the values which will come from the UI, send it to AuthProvider and so on...
 class AuthService implements AuthProvider {
   final AuthProvider provider;
+
+  // Initialize that variable.
   const AuthService(this.provider);
 
   @override
@@ -18,7 +21,6 @@ class AuthService implements AuthProvider {
       );
 
   @override
-  // TODO: implement currentUser
   AuthUser? get currentUser => provider.currentUser;
 
   @override

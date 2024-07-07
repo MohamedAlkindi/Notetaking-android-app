@@ -10,7 +10,19 @@ import 'auth_exceptions.dart';
 import 'package:firebase_auth/firebase_auth.dart'
     show FirebaseAuth, FirebaseAuthException;
 
+// Implement that abstract class with its getter, functions here.
 class FirebaseAuthProvider implements AuthProvider {
+  @override
+  AuthUser? get currentUser {
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      return AuthUser.fromFirebase(user);
+    } else {
+      return null;
+    }
+  }
+
   @override
   Future<AuthUser> createUser({
     required String inputEmail,
@@ -37,17 +49,6 @@ class FirebaseAuthProvider implements AuthProvider {
       throw AuthExceptions();
     } catch (e) {
       throw GenericAuthException();
-    }
-  }
-
-  @override
-  AuthUser? get currentUser {
-    final user = FirebaseAuth.instance.currentUser;
-
-    if (user != null) {
-      return AuthUser.fromFirebase(user);
-    } else {
-      return null;
     }
   }
 

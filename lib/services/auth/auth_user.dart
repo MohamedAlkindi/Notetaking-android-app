@@ -10,7 +10,7 @@ class AuthUser {
   final bool isEmailVerified;
   const AuthUser(this.isEmailVerified);
 
-// factory constructor.
+// factory constructor to return a current instance of the logged in user.
 // take the user from the firebase, and only get the emailVerified value, then put that value in your class.
   factory AuthUser.fromFirebase(User user) => AuthUser(user.emailVerified);
 }
