@@ -4,6 +4,8 @@
 import 'package:Notetaking/services/auth/auth_user.dart';
 
 abstract class AuthProvider {
+  // To initialize the firebase.
+  Future<void> initializer();
   // Optional because it may or may not return a user.
   AuthUser? get currentUser;
 

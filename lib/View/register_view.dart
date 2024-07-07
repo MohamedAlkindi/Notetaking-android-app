@@ -1,15 +1,8 @@
+import 'package:Notetaking/services/auth/auth_exceptions.dart';
+import 'package:Notetaking/services/auth/auth_service.dart';
 import 'package:flutter/material.dart';
 import '../Constants/routes.dart';
 import '../Error_Handling/error_functions.dart';
-
-// To use firebase class.
-import 'package:firebase_core/firebase_core.dart';
-
-// To use the 'create user' function.
-import 'package:firebase_auth/firebase_auth.dart';
-
-// Use this to initialize the firebase.
-import '../firebase_options.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -123,24 +116,18 @@ class _RegisterViewState extends State<RegisterView> {
               margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
               child: TextButton(
                 onPressed: () async {
-                  await Firebase.initializeApp(
-                    options: DefaultFirebaseOptions.currentPlatform,
-                  );
-
                   final inputEmail = _email.text;
                   final inputPassword = _password.text;
                   final inputRepeatPassword = _repeatPassword.text;
 
                   try {
                     if (inputPassword == inputRepeatPassword) {
-                      await FirebaseAuth.instance
-                          .createUserWithEmailAndPassword(
-                        email: inputEmail,
-                        password: inputPassword,
-                      );
-                      final user = FirebaseAuth.instance.currentUser;
-                      // Send a verification email to the user.
-                      await user?.sendEmailVerification();
+                      await AuthService.fireBase().createUser(
+                          inputEmail: inputEmail,
+                          inputPassword: inputPassword,
+                          repeatPassword: inputRepeatPassword);
+
+                      AuthService.fireBase().sendEmailVerification();
 
                       Navigator.of(context).pushNamed(
                         emailVerifyRoute,
@@ -148,14 +135,14 @@ class _RegisterViewState extends State<RegisterView> {
                     } else {
                       showErrorDialog(context, "Passwords don't match.");
                     }
-                  } on FirebaseAuthException catch (e) {
-                    if (e.code == "network-request-failed") {
-                      showErrorDialog(
-                          context, "Please check your internet connection.");
-                    } else {
-                      showErrorDialog(
-                          context, "Please check your email and/or password.");
-                    }
+                  } on NetworkExceptions {
+                    showErrorDialog(
+                        context, "Please check your internet connection.");
+                  } on AuthExceptions {
+                    showErrorDialog(
+                        context, "Please check your input details.");
+                  } on GenericAuthException {
+                    showErrorDialog(context, "An error has happened!");
                   }
                 },
                 style: TextButton.styleFrom(
