@@ -1,7 +1,7 @@
 import 'package:Notetaking/services/auth/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:Notetaking/Constants/routes.dart';
-import '../Error_Handling/error_functions.dart';
+import '../Dialogs/error_dialog.dart';
 import '../services/auth/auth_exceptions.dart';
 
 // Use stf to quickly create a stateful widget.
