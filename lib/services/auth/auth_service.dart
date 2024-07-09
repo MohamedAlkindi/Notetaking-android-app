@@ -3,7 +3,8 @@ import 'package:Notetaking/services/auth/firebase_auth_provider.dart';
 import 'auth_provider.dart';
 import 'auth_user.dart';
 
-// This class that'll be directly contacting the UI. so it implements the AuthProvider and giving it the values which will come from the UI, send it to AuthProvider and so on...
+// This class that'll directly contact the UI. so it implements the AuthProvider 'which is the interface', and give it the values which will come from the UI.
+// Mainly services are used to add more logic to the implemented interface, but here it doesn't so u can completely remove this class because it doesn't make sense 😀.
 class AuthService implements AuthProvider {
   final AuthProvider provider;
 

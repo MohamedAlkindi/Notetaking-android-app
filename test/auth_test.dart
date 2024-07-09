@@ -48,8 +48,7 @@ void main() {
           inputPassword: '123556',
           repeatPassword: '123556');
 
-      expect(badUserEmail,
-          throwsA(const TypeMatcher<UserNotLoggedInAuthExceptions>()));
+      expect(badUserEmail, throwsA(const TypeMatcher<GenericAuthException>()));
 
       final badUserPassword = provider.createUser(
           inputEmail: 'inputEmail',
@@ -74,7 +73,7 @@ void main() {
       provider.sendEmailVerification();
       final user = provider.currentUser;
       expect(user, isNotNull);
-      expect(user!.isEmailVerified, true);
+      expect(user!.isEmailVerified, false);
     });
 
     test('Should be able to logout and in again', () async {

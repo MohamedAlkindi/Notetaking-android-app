@@ -1,19 +1,18 @@
-// Implement the auth_user class.
 import 'package:Notetaking/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart'
+    show FirebaseAuth, FirebaseAuthException;
 
+// Implement the auth_user class.
 import 'auth_user.dart';
 
-// Because we'll use AuthUser which uses this file and in reverse.
+// The abstract class.
 import 'auth_provider.dart';
 
 // for all exceptions.
 import 'auth_exceptions.dart';
 
-import 'package:firebase_auth/firebase_auth.dart'
-    show FirebaseAuth, FirebaseAuthException;
-
-// Implement that abstract class with its getter, functions here.
+// Implement that abstract class with its getter and functions here.
 class FirebaseAuthProvider implements AuthProvider {
   @override
   AuthUser? get currentUser {
@@ -48,9 +47,9 @@ class FirebaseAuthProvider implements AuthProvider {
       } else {
         throw UserNotLoggedInAuthExceptions();
       }
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException catch (_) {
       throw AuthExceptions();
-    } catch (e) {
+    } catch (_) {
       throw GenericAuthException();
     }
   }
@@ -72,15 +71,16 @@ class FirebaseAuthProvider implements AuthProvider {
       } else {
         throw UserNotLoggedInAuthExceptions();
       }
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException catch (_) {
       throw AuthExceptions();
-    } catch (e) {
+    } catch (_) {
       throw GenericAuthException();
     }
   }
 
   @override
   Future<void> logOut() async {
+    // currentUser not used!
     final user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
@@ -92,6 +92,7 @@ class FirebaseAuthProvider implements AuthProvider {
 
   @override
   Future<void> sendEmailVerification() async {
+    // currentUser not used!
     final user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
