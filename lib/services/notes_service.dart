@@ -9,6 +9,14 @@ import 'package:path_provider/path_provider.dart'
 import 'package:path/path.dart';
 
 class NoteService {
+  // Creating a singleton instance.
+  static final NoteService _singletonShared = NoteService._sharedInstance();
+  // private initalizer to be used.
+  NoteService._sharedInstance();
+
+  // return the instance when the class called.
+  factory NoteService() => _singletonShared;
+
   // Caching notes, to save the notes somewhere and get it from there.
   // Having data, use stream controller to manipulate that data 'add, remove update...'
   // Stream, stream controller to manipulate the stream 'stream manager, in charge of doing so'.
@@ -23,6 +31,8 @@ class NoteService {
   final _notesStreamController =
       StreamController<List<DatabaseNote>>.broadcast();
 
+  // Getter to get all
+  Stream<List<DatabaseNote>> get allNotes => _notesStreamController.stream;
   // The purpose of this function is to read the notes from the database and cache it to _notes and update the streamController with new data.
   Future<void> _cacheNotes() async {
     final allNotes = await getAllNotes();
@@ -55,6 +65,15 @@ class NoteService {
     }
   }
 
+  // Ensure the database is open.
+  Future<void> ensureDBIsOpen() async {
+    try {
+      await open();
+    } on DatabaseAlreadyOpenException {
+      // Skip.
+    }
+  }
+
   Future<void> close() async {
     // final db = _db;
     if (_db == null) {
@@ -78,6 +97,7 @@ class NoteService {
   }
 
   Future<void> deleteUser({required String email}) async {
+    await ensureDBIsOpen();
     final db = _getDatabaseOrThrowException();
 
     // NOT UNDERSTOOD!
@@ -92,6 +112,7 @@ class NoteService {
   }
 
   Future<DatabaseUser> createUser({required String email}) async {
+    await ensureDBIsOpen();
     final db = _getDatabaseOrThrowException();
 
 // Looking for at least one person with the same email.
@@ -117,6 +138,7 @@ class NoteService {
 
 // Retrieve a user based on their email address.
   Future<DatabaseUser> getUser({required String email}) async {
+    await ensureDBIsOpen();
     final db = _getDatabaseOrThrowException();
     final result = await db.query(
       userTable,
@@ -133,6 +155,7 @@ class NoteService {
   }
 
   Future<DatabaseNote> createNote({required DatabaseUser noteOwner}) async {
+    await ensureDBIsOpen();
     final db = _getDatabaseOrThrowException();
 
 // make sure owner exist with the correct id.
@@ -165,6 +188,7 @@ class NoteService {
   }
 
   Future<void> deleteNote({required int id}) async {
+    await ensureDBIsOpen();
     final db = _getDatabaseOrThrowException();
 
     final deletedCount = await db.delete(
@@ -183,6 +207,7 @@ class NoteService {
   }
 
   Future<int> deleteAllNotes() async {
+    await ensureDBIsOpen();
     final db = _getDatabaseOrThrowException();
     final numberOfDeletion = await db.delete(notesTable);
     _notes = [];
@@ -192,6 +217,7 @@ class NoteService {
 
   // Get specific note.
   Future<DatabaseNote> getNote({required int id}) async {
+    await ensureDBIsOpen();
     final db = _getDatabaseOrThrowException();
     final notes = await db.query(
       notesTable,
@@ -220,6 +246,7 @@ class NoteService {
 
   // Get all notes.
   Future<Iterable<DatabaseNote>> getAllNotes() async {
+    await ensureDBIsOpen();
     final db = _getDatabaseOrThrowException();
     final notes = await db.query(notesTable);
 
@@ -230,6 +257,7 @@ class NoteService {
     required DatabaseNote note,
     required String text,
   }) async {
+    await ensureDBIsOpen();
     final db = _getDatabaseOrThrowException();
 
     // to make sure the note is existing before updating it.
@@ -258,6 +286,7 @@ class NoteService {
 
   // Create or get the current user that's registered with firebase account but might not have an account in our db.
   Future<DatabaseUser> getOrCreateUser({required String email}) async {
+    await ensureDBIsOpen();
     try {
       final user = await getUser(email: email);
       return user;

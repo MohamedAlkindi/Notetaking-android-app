@@ -1,12 +1,14 @@
 // Note: if any "Configuration not found" error is there, go to the console website, authorization, and enable the configuration for ur security option "email and password, facebook, apple, twitter.... sign in".
 
 import 'package:flutter/material.dart';
-import 'package:Notetaking/View/notes_view.dart';
+import 'package:Notetaking/View/notes/notes_view.dart';
 import 'package:Notetaking/View/login_view.dart';
 import 'package:Notetaking/View/register_view.dart';
 import 'package:Notetaking/View/email_verification_view.dart';
 import 'package:Notetaking/View/homepage_view.dart';
+import 'package:path/path.dart';
 import 'Constants/routes.dart';
+import 'View/notes/new_note_view.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,6 +34,7 @@ void main() {
       registerRoute: (context) => const RegisterView(),
       notesRoute: (context) => const NotesView(),
       emailVerifyRoute: (context) => const EmailVerifyView(),
+      newNoteRoute: (context) => const NewNoteView(),
     },
   ));
 }

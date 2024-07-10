@@ -1,4 +1,4 @@
-import 'package:Notetaking/View/notes_view.dart';
+import 'package:Notetaking/View/notes/notes_view.dart';
 import 'package:Notetaking/services/auth/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:Notetaking/View/email_verification_view.dart';
