@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:Notetaking/Constants/crud_constants.dart';
 import 'package:Notetaking/Error_Handling/crud_exceptions.dart';
 import 'package:Notetaking/database_tables/notes_table.dart';
@@ -8,6 +9,27 @@ import 'package:path_provider/path_provider.dart'
 import 'package:path/path.dart';
 
 class NoteService {
+  // Caching notes, to save the notes somewhere and get it from there.
+  // Having data, use stream controller to manipulate that data 'add, remove update...'
+  // Stream, stream controller to manipulate the stream 'stream manager, in charge of doing so'.
+
+  // Stream:
+  List<DatabaseNote> _notes = [];
+
+  // Stream controller of the type List<DatabaseNote>:
+  // Broadcast means that it can have multiple listeners to the stream.
+  // So you can have a listener for new notes added, and a listener for getting all notes and so on..
+  // Otherwise you'll have to close it or you'll get an exception.
+  final _notesStreamController =
+      StreamController<List<DatabaseNote>>.broadcast();
+
+  // The purpose of this function is to read the notes from the database and cache it to _notes and update the streamController with new data.
+  Future<void> _cacheNotes() async {
+    final allNotes = await getAllNotes();
+    _notes = allNotes.toList();
+    _notesStreamController.add(_notes);
+  }
+
   // Create a database instance.
   Database? _db;
 
@@ -26,6 +48,8 @@ class NoteService {
 
       db.execute(createUserTable);
       db.execute(createNoteTable);
+      // cache all notes after creating the table 'it'll be empty but the stream is chunks of data in certain time 'empty, one element, another new element......'
+      await _cacheNotes();
     } on MissingPlatformDirectoryException {
       throw UnableToGetDocumentsDirectory();
     }
@@ -133,6 +157,10 @@ class NoteService {
       isSyncedWithCloud: true,
     );
 
+    // Add the created note to the stream and update the streamController.
+    _notes.add(note);
+    _notesStreamController.add(_notes);
+
     return note;
   }
 
@@ -146,15 +174,23 @@ class NoteService {
       whereArgs: [id],
     );
 
-    if (deletedCount == 0) throw CouldNotDeleteNote();
+    if (deletedCount == 0) {
+      throw CouldNotDeleteNote();
+    } else {
+      _notes.removeWhere((note) => note.id == id);
+      _notesStreamController.add(_notes);
+    }
   }
 
   Future<int> deleteAllNotes() async {
     final db = _getDatabaseOrThrowException();
-    return await db.delete(notesTable);
+    final numberOfDeletion = await db.delete(notesTable);
+    _notes = [];
+    _notesStreamController.add(_notes);
+    return numberOfDeletion;
   }
 
-// Get specific note.
+  // Get specific note.
   Future<DatabaseNote> getNote({required int id}) async {
     final db = _getDatabaseOrThrowException();
     final notes = await db.query(
@@ -167,7 +203,18 @@ class NoteService {
     if (notes.isEmpty) {
       throw CouldNotFindNote();
     } else {
-      return DatabaseNote.fromRow(notes.first);
+      // update the note in cache first.
+      final note = DatabaseNote.fromRow(notes.first);
+
+      // just to make sure that we have the newest version of the note in cache.
+      // remove the old note.
+      _notes.removeWhere((note) => note.id == id);
+
+      // readd the new note.
+      _notes.add(note);
+      // update streamController/
+      _notesStreamController.add(_notes);
+      return note;
     }
   }
 
@@ -188,6 +235,7 @@ class NoteService {
     // to make sure the note is existing before updating it.
     await getNote(id: note.id);
 
+    // Update in database.
     final updateCount = await db.update(notesTable, {
       textColumn: text,
       isSyncedWithCloudColumn: 0,
@@ -197,7 +245,27 @@ class NoteService {
       throw CouldNotUpdateNote();
     } else {
       // use the getNote to return the note 'which it what it does'.
-      return await getNote(id: note.id);
+      final updatedNote = await getNote(id: note.id);
+      // Remove the old note.
+      _notes.removeWhere((note) => note.id == updatedNote.id);
+
+      // Update the note.
+      _notes.add(updatedNote);
+      _notesStreamController.add(_notes);
+      return updatedNote;
+    }
+  }
+
+  // Create or get the current user that's registered with firebase account but might not have an account in our db.
+  Future<DatabaseUser> getOrCreateUser({required String email}) async {
+    try {
+      final user = await getUser(email: email);
+      return user;
+    } on CouldNotFindUser {
+      final createdUser = createUser(email: email);
+      return createdUser;
+    } catch (e) {
+      rethrow;
     }
   }
 }
