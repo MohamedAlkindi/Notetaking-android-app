@@ -7,8 +7,8 @@ Future<bool> showLogoutDialog(BuildContext context) {
     title: 'Logout',
     content: 'Are you sure you want to logout?',
     optionBuilder: () => {
-      "Yes": true,
       "No": false,
+      "Yes": true,
     },
     // Either take the returned value or by default it's false, it's when the user press outside the dialog.
   ).then((value) => value ?? false);
