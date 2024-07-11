@@ -1,11 +1,11 @@
 import 'package:Notetaking/Dialogs/generic_dialog.dart';
 import 'package:flutter/material.dart';
 
-Future<bool> showLogoutDialog(BuildContext context) {
+Future<bool> showDeleteDialog(BuildContext context) {
   return showGenericDialog(
     context: context,
-    title: 'Logout',
-    content: 'Are you sure you want to logout?',
+    title: 'Delete',
+    content: 'Are you sure you want to delete this note?',
     optionBuilder: () => {
       "Yes": true,
       "No": false,

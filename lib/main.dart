@@ -6,7 +6,6 @@ import 'package:Notetaking/View/login_view.dart';
 import 'package:Notetaking/View/register_view.dart';
 import 'package:Notetaking/View/email_verification_view.dart';
 import 'package:Notetaking/View/homepage_view.dart';
-import 'package:path/path.dart';
 import 'Constants/routes.dart';
 import 'View/notes/new_note_view.dart';
 
