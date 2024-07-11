@@ -1,10 +1,7 @@
 import 'package:Notetaking/database_tables/notes_table.dart';
 import 'package:Notetaking/services/auth/auth_service.dart';
-import 'package:Notetaking/services/auth/auth_user.dart';
 import 'package:Notetaking/services/notes_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 class NewNoteView extends StatefulWidget {
   const NewNoteView({super.key});

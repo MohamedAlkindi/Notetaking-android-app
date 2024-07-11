@@ -12,7 +12,13 @@ class NoteService {
   // Creating a singleton instance.
   static final NoteService _singletonShared = NoteService._sharedInstance();
   // private initalizer to be used.
-  NoteService._sharedInstance();
+  NoteService._sharedInstance() {
+    _notesStreamController = StreamController<List<DatabaseNote>>.broadcast(
+      onListen: () {
+        _notesStreamController.sink.add(_notes);
+      },
+    );
+  }
 
   // return the instance when the class called.
   factory NoteService() => _singletonShared;
@@ -25,11 +31,11 @@ class NoteService {
   List<DatabaseNote> _notes = [];
 
   // Stream controller of the type List<DatabaseNote>:
+  // Deleted 👇🏼
   // Broadcast means that it can have multiple listeners to the stream.
   // So you can have a listener for new notes added, and a listener for getting all notes and so on..
   // Otherwise you'll have to close it or you'll get an exception.
-  final _notesStreamController =
-      StreamController<List<DatabaseNote>>.broadcast();
+  late final _notesStreamController;
 
   // Getter to get all
   Stream<List<DatabaseNote>> get allNotes => _notesStreamController.stream;

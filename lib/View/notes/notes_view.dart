@@ -1,4 +1,5 @@
 import 'package:Notetaking/Dialogs/logout_dialog.dart';
+import 'package:Notetaking/database_tables/notes_table.dart';
 import 'package:Notetaking/enums/menu_action.dart';
 import 'package:Notetaking/services/auth/auth_service.dart';
 import 'package:Notetaking/services/notes_service.dart';
@@ -25,12 +26,6 @@ class _NotesViewState extends State<NotesView> {
     _noteService = NoteService();
     _noteService.open();
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    _noteService.close();
-    super.dispose();
   }
 
   @override
@@ -91,7 +86,25 @@ class _NotesViewState extends State<NotesView> {
                     // 'fall through' when it has 0 or more notes:
                     case ConnectionState.waiting:
                     case ConnectionState.active:
-                      return const Text('waiting for notes');
+                      if (snapshot.hasData) {
+                        final allNote = snapshot.data as List<DatabaseNote>;
+                        return ListView.builder(
+                          itemCount: allNote.length,
+                          itemBuilder: (context, index) {
+                            final note = allNote[index];
+                            return ListTile(
+                              title: Text(
+                                note.text,
+                                maxLines: 1,
+                                softWrap: true,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            );
+                          },
+                        );
+                      } else {
+                        return const CircularProgressIndicator();
+                      }
                     default:
                       return const CircularProgressIndicator();
                   }
