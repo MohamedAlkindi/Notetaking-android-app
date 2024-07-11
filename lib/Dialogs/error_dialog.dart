@@ -1,21 +1,13 @@
+import 'package:Notetaking/Dialogs/generic_dialog.dart';
 import 'package:flutter/material.dart';
 
-void showErrorDialog(BuildContext context, String errorMessage) {
-  showDialog(
+Future<void> showErrorDialog(BuildContext context, String content) {
+  return showGenericDialog<void>(
     context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('Error'),
-        content: Text(errorMessage),
-        actions: [
-          TextButton(
-            child: const Text('OK'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      );
+    title: 'Error',
+    content: content,
+    optionBuilder: () => {
+      'OK': null,
     },
   );
 }

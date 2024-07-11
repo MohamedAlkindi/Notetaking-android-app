@@ -1,4 +1,5 @@
 import 'package:Notetaking/Dialogs/logout_dialog.dart';
+import 'package:Notetaking/View/notes_list_view.dart';
 import 'package:Notetaking/database_tables/notes_table.dart';
 import 'package:Notetaking/enums/menu_action.dart';
 import 'package:Notetaking/services/auth/auth_service.dart';
@@ -88,18 +89,10 @@ class _NotesViewState extends State<NotesView> {
                     case ConnectionState.active:
                       if (snapshot.hasData) {
                         final allNote = snapshot.data as List<DatabaseNote>;
-                        return ListView.builder(
-                          itemCount: allNote.length,
-                          itemBuilder: (context, index) {
-                            final note = allNote[index];
-                            return ListTile(
-                              title: Text(
-                                note.text,
-                                maxLines: 1,
-                                softWrap: true,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            );
+                        return NotesListView(
+                          notes: allNote,
+                          onDeleteNote: (note) async {
+                            await _noteService.deleteNote(id: note.id);
                           },
                         );
                       } else {
@@ -111,7 +104,7 @@ class _NotesViewState extends State<NotesView> {
                 },
               );
             default:
-              return CircularProgressIndicator();
+              return const CircularProgressIndicator();
           }
         },
       ),
