@@ -18,6 +18,8 @@ class _RegisterViewState extends State<RegisterView> {
 
   late FocusNode _focusNode1;
   late FocusNode _focusNode2;
+  bool _isObsecure = true;
+
   @override
   void initState() {
     _email = TextEditingController();
@@ -89,15 +91,23 @@ class _RegisterViewState extends State<RegisterView> {
                 margin: const EdgeInsets.fromLTRB(0, 0, 0, 15),
                 // Password textbox.
                 child: TextField(
-                  obscureText: true,
+                  obscureText: _isObsecure,
                   enableSuggestions: false,
                   autocorrect: false,
                   controller: _password,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     hintText: 'Enter Password ',
-                    border: OutlineInputBorder(
+                    border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(
                         Radius.circular(10.0),
+                      ),
+                    ),
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() => _isObsecure = !_isObsecure);
+                      },
+                      icon: const Icon(
+                        Icons.remove_red_eye,
                       ),
                     ),
                   ),
@@ -113,14 +123,22 @@ class _RegisterViewState extends State<RegisterView> {
               SizedBox(
                 width: 450,
                 child: TextField(
-                  obscureText: true,
+                  obscureText: _isObsecure,
                   enableSuggestions: false,
                   controller: _repeatPassword,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     hintText: 'Repeat Password ',
-                    border: OutlineInputBorder(
+                    border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(
                         Radius.circular(10.0),
+                      ),
+                    ),
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() => _isObsecure = !_isObsecure);
+                      },
+                      icon: const Icon(
+                        Icons.remove_red_eye,
                       ),
                     ),
                   ),

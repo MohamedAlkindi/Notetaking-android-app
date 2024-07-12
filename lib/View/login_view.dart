@@ -19,6 +19,8 @@ class _LoginViewState extends State<LoginView> {
   late final TextEditingController _password;
 
   late FocusNode _myFocusNote;
+
+  bool _isObsecure = true;
   // But must create an initializer and a disposer manually.
   @override
   void initState() {
@@ -86,15 +88,23 @@ class _LoginViewState extends State<LoginView> {
               SizedBox(
                 width: 450,
                 child: TextField(
-                  obscureText: true,
+                  obscureText: _isObsecure,
                   enableSuggestions: false,
                   autocorrect: false,
                   controller: _password,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     hintText: 'Enter Password ',
-                    border: OutlineInputBorder(
+                    border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(
                         Radius.circular(10.0),
+                      ),
+                    ),
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() => _isObsecure = !_isObsecure);
+                      },
+                      icon: const Icon(
+                        Icons.remove_red_eye,
                       ),
                     ),
                   ),
