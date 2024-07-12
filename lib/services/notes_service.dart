@@ -36,24 +36,21 @@ class NoteService {
   // Broadcast means that it can have multiple listeners to the stream.
   // So you can have a listener for new notes added, and a listener for getting all notes and so on..
   // Otherwise you'll have to close it or you'll get an exception.
-  late final _notesStreamController;
+  late final StreamController<List<DatabaseNote>> _notesStreamController;
 
   // !Create a currentUser instance to filter notes by currentUser.
   DatabaseUser? _user;
 
   // Getter to get all
-  Stream<List<DatabaseNote>> get allNotes {
-    Stream<List<DatabaseNote>> stream =
-        _notesStreamController.stream as Stream<List<DatabaseNote>>;
-    return stream.filter((note) {
-      final currentUser = _user;
-      if (currentUser != null) {
-        return note.userId == currentUser.id;
-      } else {
-        throw UserShouldBeSetBeforeReadingAllNotes;
-      }
-    });
-  }
+  Stream<List<DatabaseNote>> get allNotes =>
+      _notesStreamController.stream.filter((note) {
+        final currentUser = _user;
+        if (currentUser != null) {
+          return note.userId == currentUser.id;
+        } else {
+          throw UserShouldBeSetBeforeReadingAllNotes;
+        }
+      });
 
   // The purpose of this function is to read the notes from the database and cache it to _notes and update the streamController with new data.
   Future<void> _cacheNotes() async {
