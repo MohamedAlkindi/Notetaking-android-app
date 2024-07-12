@@ -3,6 +3,7 @@ import 'package:Notetaking/Constants/crud_constants.dart';
 import 'package:Notetaking/Error_Handling/crud_exceptions.dart';
 import 'package:Notetaking/database_tables/notes_table.dart';
 import 'package:Notetaking/database_tables/users_table.dart';
+import 'package:Notetaking/extensions/list/filter.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart'
     show MissingPlatformDirectoryException, getApplicationDocumentsDirectory;
@@ -37,8 +38,23 @@ class NoteService {
   // Otherwise you'll have to close it or you'll get an exception.
   late final _notesStreamController;
 
+  // !Create a currentUser instance to filter notes by currentUser.
+  DatabaseUser? _user;
+
   // Getter to get all
-  Stream<List<DatabaseNote>> get allNotes => _notesStreamController.stream;
+  Stream<List<DatabaseNote>> get allNotes {
+    Stream<List<DatabaseNote>> stream =
+        _notesStreamController.stream as Stream<List<DatabaseNote>>;
+    return stream.filter((note) {
+      final currentUser = _user;
+      if (currentUser != null) {
+        return note.userId == currentUser.id;
+      } else {
+        throw UserShouldBeSetBeforeReadingAllNotes;
+      }
+    });
+  }
+
   // The purpose of this function is to read the notes from the database and cache it to _notes and update the streamController with new data.
   Future<void> _cacheNotes() async {
     final allNotes = await getAllNotes();
@@ -270,10 +286,15 @@ class NoteService {
     await getNote(id: note.id);
 
     // Update in database.
-    final updateCount = await db.update(notesTable, {
-      textColumn: text,
-      isSyncedWithCloudColumn: 0,
-    });
+    final updateCount = await db.update(
+      notesTable,
+      {
+        textColumn: text,
+        isSyncedWithCloudColumn: 0,
+      },
+      where: 'id = ?',
+      whereArgs: [note.id],
+    );
 
     if (updateCount == 0) {
       throw CouldNotUpdateNote();
@@ -291,13 +312,22 @@ class NoteService {
   }
 
   // Create or get the current user that's registered with firebase account but might not have an account in our db.
-  Future<DatabaseUser> getOrCreateUser({required String email}) async {
+  Future<DatabaseUser> getOrCreateUser({
+    required String email,
+    bool setAsCurrentUser = true,
+  }) async {
     await ensureDBIsOpen();
     try {
       final user = await getUser(email: email);
+      if (setAsCurrentUser) {
+        _user = user;
+      }
       return user;
     } on CouldNotFindUser {
-      final createdUser = createUser(email: email);
+      final createdUser = await createUser(email: email);
+      if (setAsCurrentUser) {
+        _user = createdUser;
+      }
       return createdUser;
     } catch (e) {
       rethrow;

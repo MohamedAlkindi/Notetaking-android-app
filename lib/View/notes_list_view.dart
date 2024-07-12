@@ -4,18 +4,20 @@ import 'package:flutter/material.dart';
 
 // Creating a callback to give values to the notes_view.
 // Define a function which will take a database note which will be called when the user presses 'yes' in the dialog.
-typedef DeleteNoteCallback = void Function(DatabaseNote note);
+typedef NoteCallBack = void Function(DatabaseNote note);
 
 class NotesListView extends StatelessWidget {
   // Passing the list of notes to this file to render them.
   final List<DatabaseNote> notes;
 
-  final DeleteNoteCallback onDeleteNote;
+  final NoteCallBack onDeleteNote;
+  final NoteCallBack onTap;
 
   const NotesListView({
     super.key,
     required this.notes,
     required this.onDeleteNote,
+    required this.onTap,
   });
 
   @override
@@ -41,6 +43,9 @@ class NotesListView extends StatelessWidget {
             },
             icon: const Icon(Icons.delete),
           ),
+          onTap: () {
+            onTap(note);
+          },
         );
       },
     );
