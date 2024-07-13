@@ -3,9 +3,11 @@ import 'package:Notetaking/View/notes_list_view.dart';
 import 'package:Notetaking/database_tables/notes_table.dart';
 import 'package:Notetaking/enums/menu_action.dart';
 import 'package:Notetaking/services/auth/auth_service.dart';
-import 'package:Notetaking/services/notes_service.dart';
+import 'package:Notetaking/services/cloud/cloud_note.dart';
 import 'package:flutter/material.dart';
 import 'package:Notetaking/Constants/routes.dart';
+
+import '../../services/cloud/firebase_cloud_storage.dart';
 // devtools is an alias, only get log from that package 'will be used instead of print()'
 // import 'dart:developer' as devtools show log;
 
@@ -18,101 +20,85 @@ class NotesView extends StatefulWidget {
 
 class _NotesViewState extends State<NotesView> {
   // Assuring that their is a current user and that user has an email.
-  String get userEmail => AuthService.fireBase().currentUser!.email;
+  String get userId => AuthService.fireBase().currentUser!.id;
 
   // Upon initialization, open the db.
-  late final NoteService _noteService;
+  late final FirebaseCloudStorage _noteService;
   @override
   void initState() {
-    _noteService = NoteService();
-    _noteService.open();
+    _noteService = FirebaseCloudStorage();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Your notes'),
-        // A list of Widgets to display in a row after the [title] widget.
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).pushNamed(createOrUpdateNoteRoute);
-            },
-            icon: const Icon(Icons.add),
-          ),
-          // Add a dropwown menu for the user, which gets its values from the enum we created eariler.
-          PopupMenuButton<MenuAction>(
-            // Creates the dropdown menu items using the values in the enum.
-            itemBuilder: (context) {
-              return [
-                const PopupMenuItem<MenuAction>(
-                  value: MenuAction.logout,
-                  child: Text('Logout'),
-                ),
-              ];
-            },
-            onSelected: (value) async {
-              // The value which we created earlier in itemBuilder.
-              switch (value) {
-                case MenuAction.logout:
-                  bool shouldLogout = await showLogoutDialog(context);
+        appBar: AppBar(
+          title: const Text('Your notes'),
+          // A list of Widgets to display in a row after the [title] widget.
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(createOrUpdateNoteRoute);
+              },
+              icon: const Icon(Icons.add),
+            ),
+            // Add a dropwown menu for the user, which gets its values from the enum we created eariler.
+            PopupMenuButton<MenuAction>(
+              // Creates the dropdown menu items using the values in the enum.
+              itemBuilder: (context) {
+                return [
+                  const PopupMenuItem<MenuAction>(
+                    value: MenuAction.logout,
+                    child: Text('Logout'),
+                  ),
+                ];
+              },
+              onSelected: (value) async {
+                // The value which we created earlier in itemBuilder.
+                switch (value) {
+                  case MenuAction.logout:
+                    bool shouldLogout = await showLogoutDialog(context);
 
-                  if (shouldLogout) {
-                    await AuthService.fireBase().logOut();
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                      loginRoute,
-                      (_) => false,
-                    );
-                  }
-              }
-            },
-          ),
-        ],
-      ),
-      body: FutureBuilder(
-        // Creating the user if it doesn't exist or return it if it does.
-        future: _noteService.getOrCreateUser(email: userEmail),
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            // if FutureBuilder use mostly use 'done'.
-            case ConnectionState.done:
-              // Listen to the changes happen to that stream getter called allNotes, from that List which has a streamController in notes_service.dart, which will build the UI.
-              // in StreamBuilder use mostly 'waiting' because a stream will most likly keep on going...
-              return StreamBuilder(
-                stream: _noteService.allNotes,
-                builder: (context, snapshot) {
-                  switch (snapshot.connectionState) {
-                    // 'fall through' when it has 0 or more notes:
-                    case ConnectionState.waiting:
-                    case ConnectionState.active:
-                      if (snapshot.hasData) {
-                        final allNote = snapshot.data as List<DatabaseNote>;
-                        return NotesListView(
-                          notes: allNote,
-                          onDeleteNote: (note) async {
-                            await _noteService.deleteNote(id: note.id);
-                          },
-                          onTap: (note) {
-                            Navigator.of(context).pushNamed(
-                                createOrUpdateNoteRoute,
-                                arguments: note);
-                          },
-                        );
-                      } else {
-                        return const CircularProgressIndicator();
-                      }
-                    default:
-                      return const CircularProgressIndicator();
-                  }
-                },
-              );
-            default:
-              return const CircularProgressIndicator();
-          }
-        },
-      ),
-    );
+                    if (shouldLogout) {
+                      await AuthService.fireBase().logOut();
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                        loginRoute,
+                        (_) => false,
+                      );
+                    }
+                }
+              },
+            ),
+          ],
+        ),
+        body: StreamBuilder(
+          stream: _noteService.allNotes(ownerUserId: userId),
+          builder: (context, snapshot) {
+            switch (snapshot.connectionState) {
+              // 'fall through' when it has 0 or more notes:
+              case ConnectionState.waiting:
+              case ConnectionState.active:
+                if (snapshot.hasData) {
+                  final allNote = snapshot.data as Iterable<CloudNote>;
+                  return NotesListView(
+                    notes: allNote,
+                    onDeleteNote: (note) async {
+                      await _noteService.deleteNote(
+                          documentId: note.documentId);
+                    },
+                    onTap: (note) {
+                      Navigator.of(context)
+                          .pushNamed(createOrUpdateNoteRoute, arguments: note);
+                    },
+                  );
+                } else {
+                  return const CircularProgressIndicator();
+                }
+              default:
+                return const CircularProgressIndicator();
+            }
+          },
+        ));
   }
 }
