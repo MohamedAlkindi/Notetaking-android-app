@@ -1,8 +1,9 @@
-import 'package:Notetaking/database_tables/notes_table.dart';
 import 'package:Notetaking/generics/get_arguments.dart';
 import 'package:Notetaking/services/auth/auth_service.dart';
-import 'package:Notetaking/services/notes_service.dart';
+import 'package:Notetaking/services/cloud/cloud_note.dart';
 import 'package:flutter/material.dart';
+
+import '../../services/cloud/firebase_cloud_storage.dart';
 
 class CreateUpdateNote extends StatefulWidget {
   const CreateUpdateNote({super.key});
@@ -13,23 +14,23 @@ class CreateUpdateNote extends StatefulWidget {
 
 class _CreateUpdateNoteState extends State<CreateUpdateNote> {
   // To keep hold of the current note, as we don't want a new note empty note to be created when hotreload or restart.
-  DatabaseNote? _note;
-  late final NoteService _noteService;
+  CloudNote? _note;
+  late final FirebaseCloudStorage _noteService;
 
   // as the user enters text we'll automatically sync that with the info in the db.
   late final TextEditingController _textEditingController;
 
   @override
   initState() {
-    _noteService = NoteService();
+    _noteService = FirebaseCloudStorage();
     _textEditingController = TextEditingController();
     super.initState();
   }
 
   // Upon coming to this view a new note will be created, this function is for that purpose.
-  Future<DatabaseNote> createOrGetExistingNote(BuildContext context) async {
+  Future<CloudNote> createOrGetExistingNote(BuildContext context) async {
     // Extracting database note from the getArgument function.
-    final widgetNote = context.getArgument<DatabaseNote>();
+    final widgetNote = context.getArgument<CloudNote>();
 
     // if the user clicked on a note, so widgetNote won't be null.
     if (widgetNote != null) {
@@ -48,13 +49,15 @@ class _CreateUpdateNoteState extends State<CreateUpdateNote> {
     final currentUser = AuthService.fireBase().currentUser!;
 
     // get email from currentUser.
-    final userEmail = currentUser.email;
+    // final userEmail = currentUser.email;
 
     // put the email as the owner.
-    final owner = await _noteService.getUser(email: userEmail);
+    // final owner = await _noteService.getUser(email: userEmail);
+
+    final userId = currentUser.id;
 
     // Saving the note.
-    final newNote = await _noteService.createNote(noteOwner: owner);
+    final newNote = await _noteService.createNewNote(ownerUserId: userId);
     _note = newNote;
 
     return newNote;
@@ -64,7 +67,7 @@ class _CreateUpdateNoteState extends State<CreateUpdateNote> {
   void _deleteNoteIfTextIsEmpty() {
     final note = _note;
     if (_textEditingController.text.isEmpty && note != null) {
-      _noteService.deleteNote(id: note.id);
+      _noteService.deleteNote(documentId: note.documentId);
     }
   }
 
@@ -75,7 +78,7 @@ class _CreateUpdateNoteState extends State<CreateUpdateNote> {
 
     if (note != null && text.isNotEmpty) {
       await _noteService.updateNote(
-        note: note,
+        documentId: note.documentId,
         text: text,
       );
     }
@@ -90,7 +93,7 @@ class _CreateUpdateNoteState extends State<CreateUpdateNote> {
 
     final text = _textEditingController.text;
     await _noteService.updateNote(
-      note: note,
+      documentId: note.documentId,
       text: text,
     );
   }
