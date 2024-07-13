@@ -1,4 +1,4 @@
-import 'package:Notetaking/services/auth/auth_exceptions.dart';
+import 'package:Notetaking/Error_Handling/auth_exceptions.dart';
 import 'package:Notetaking/services/auth/auth_service.dart';
 import 'package:flutter/material.dart';
 import '../Constants/routes.dart';
@@ -44,11 +44,6 @@ class _RegisterViewState extends State<RegisterView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text(
-          'Register',
-        ),
-      ),
       body: Center(
         child: SingleChildScrollView(
           child: Column(
@@ -56,7 +51,17 @@ class _RegisterViewState extends State<RegisterView> {
             children: [
               Image.asset(
                 'assets/images/register.png',
-                height: 140,
+                height: 180,
+              ),
+              Container(
+                margin: const EdgeInsets.fromLTRB(0, 20, 0, 10),
+                child: const Text(
+                  'Hello there!',
+                  style: TextStyle(
+                    fontSize: 26,
+                    fontFamily: 'Georgia',
+                  ),
+                ),
               ),
               Container(
                 width: 450,
@@ -76,6 +81,9 @@ class _RegisterViewState extends State<RegisterView> {
                       borderRadius: BorderRadius.all(
                         Radius.circular(10.0),
                       ),
+                    ),
+                    suffixIcon: Icon(
+                      Icons.email,
                     ),
                   ),
                   textInputAction: TextInputAction.next,
@@ -149,7 +157,7 @@ class _RegisterViewState extends State<RegisterView> {
 
               // Register button.
               Container(
-                margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                margin: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                 child: TextButton(
                   onPressed: () async {
                     final inputEmail = _email.text;
@@ -182,11 +190,14 @@ class _RegisterViewState extends State<RegisterView> {
                     }
                   },
                   style: TextButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(224, 199, 201, 228),
-                    padding: const EdgeInsets.fromLTRB(40, 15, 40, 15),
+                    backgroundColor: const Color.fromARGB(255, 149, 54, 228),
+                    padding: const EdgeInsets.fromLTRB(100, 15, 100, 15),
                   ),
                   child: const Text(
                     'Register',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),

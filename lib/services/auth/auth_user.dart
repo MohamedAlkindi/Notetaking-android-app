@@ -10,15 +10,21 @@ import 'package:flutter/material.dart';
 class AuthUser {
   // Get the email address of the current user.
   // Same signature what's inside the as User class of firebase.
-  final String? email;
+  final String id;
+  final String email;
   final bool isEmailVerified;
-  const AuthUser({required this.email, required this.isEmailVerified});
+  const AuthUser({
+    required this.id,
+    required this.email,
+    required this.isEmailVerified,
+  });
 
 // factory constructor to return a current instance of the logged in user.
 // take the user from the firebase, and get the emailVerified value, and email then put those values in your class.
 // When pressing . after the AuthUser u r declaring a new function. We give this function the user and it initalize the value of the boolean variable with the emailVerified state of the sent user.
   factory AuthUser.fromFirebase(User user) => AuthUser(
-        email: user.email,
+        id: user.uid,
+        email: user.email!,
         isEmailVerified: user.emailVerified,
       );
 }

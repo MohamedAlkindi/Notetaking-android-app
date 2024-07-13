@@ -25,7 +25,7 @@ void main() {
     ),
 
     // Choose and run the homepage.
-    home: const HomePage(),
+    home: const LoginView(),
 
     // Create routes to swich from login to register... and vise versa..
     routes: {

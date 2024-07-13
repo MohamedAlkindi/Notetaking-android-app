@@ -48,7 +48,7 @@ class _CreateUpdateNoteState extends State<CreateUpdateNote> {
     final currentUser = AuthService.fireBase().currentUser!;
 
     // get email from currentUser.
-    final userEmail = currentUser.email!;
+    final userEmail = currentUser.email;
 
     // put the email as the owner.
     final owner = await _noteService.getUser(email: userEmail);

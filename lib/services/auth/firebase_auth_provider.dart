@@ -10,7 +10,7 @@ import 'auth_user.dart';
 import 'auth_provider.dart';
 
 // for all exceptions.
-import 'auth_exceptions.dart';
+import '../../Error_Handling/auth_exceptions.dart';
 
 // Implement that abstract class with its getter and functions here.
 class FirebaseAuthProvider implements AuthProvider {

@@ -2,7 +2,7 @@ import 'package:Notetaking/services/auth/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:Notetaking/Constants/routes.dart';
 import '../Dialogs/error_dialog.dart';
-import '../services/auth/auth_exceptions.dart';
+import '../Error_Handling/auth_exceptions.dart';
 
 // Use stf to quickly create a stateful widget.
 class LoginView extends StatefulWidget {
@@ -42,11 +42,6 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text(
-          'Login',
-        ),
-      ),
       body: Center(
         // To make the column scrollable.
         child: SingleChildScrollView(
@@ -57,7 +52,16 @@ class _LoginViewState extends State<LoginView> {
                 'assets/images/login.png',
                 height: 180,
               ),
-
+              Container(
+                margin: const EdgeInsets.fromLTRB(0, 20, 0, 10),
+                child: const Text(
+                  'Welcome Back!',
+                  style: TextStyle(
+                    fontSize: 26,
+                    fontFamily: 'Georgia',
+                  ),
+                ),
+              ),
               // Creating 2 'textboxes' one for email and the second for password, each in their own 'Container' to put some styling to them.
               // Email textfield.
               Container(
@@ -74,6 +78,9 @@ class _LoginViewState extends State<LoginView> {
                       borderRadius: BorderRadius.all(
                         Radius.circular(10.0),
                       ),
+                    ),
+                    suffixIcon: Icon(
+                      Icons.email,
                     ),
                   ),
                   textInputAction: TextInputAction.next,
@@ -115,7 +122,7 @@ class _LoginViewState extends State<LoginView> {
 
               // Login button.
               Container(
-                margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                margin: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                 child: TextButton(
                   onPressed: () async {
                     // As the user clicks on the button create 2 variables and get the text from the text boxes using the TextEditingController.
@@ -154,11 +161,14 @@ class _LoginViewState extends State<LoginView> {
                     }
                   },
                   style: TextButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(224, 199, 201, 228),
-                    padding: const EdgeInsets.fromLTRB(40, 15, 40, 15),
+                    backgroundColor: Color.fromARGB(255, 149, 54, 228),
+                    padding: const EdgeInsets.fromLTRB(100, 15, 100, 15),
                   ),
                   child: const Text(
                     'Login',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),

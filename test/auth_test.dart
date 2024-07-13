@@ -1,5 +1,5 @@
 // Creating a mock auth service, 'for testing'.
-import 'package:Notetaking/services/auth/auth_exceptions.dart';
+import 'package:Notetaking/Error_Handling/auth_exceptions.dart';
 import 'package:Notetaking/services/auth/auth_provider.dart';
 import 'package:Notetaking/services/auth/auth_user.dart';
 import 'package:test/test.dart';
@@ -137,7 +137,11 @@ class MockAuthProvider implements AuthProvider {
 
     // creating a user, and assign it to our user.
     // as the user signs in then obviously the boolean value of the user will be turned to true.
-    const user = AuthUser(isEmailVerified: false, email: 'yepe@gmail.com');
+    const user = AuthUser(
+      id: 'xx',
+      isEmailVerified: false,
+      email: 'yepe@gmail.com',
+    );
     _user = user;
     return Future.value(user);
   }
@@ -158,7 +162,11 @@ class MockAuthProvider implements AuthProvider {
     if (user == null) throw UserNotLoggedInAuthExceptions();
 
     // creating a 'new user' that has the boolean value as false, and replace it with the old user.
-    const newUser = AuthUser(isEmailVerified: false, email: 'ye@gmail.com');
+    const newUser = AuthUser(
+      id: 'xx',
+      isEmailVerified: false,
+      email: 'ye@gmail.com',
+    );
     _user = newUser;
   }
 }

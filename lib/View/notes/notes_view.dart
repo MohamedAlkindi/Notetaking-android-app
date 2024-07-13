@@ -18,7 +18,7 @@ class NotesView extends StatefulWidget {
 
 class _NotesViewState extends State<NotesView> {
   // Assuring that their is a current user and that user has an email.
-  String get userEmail => AuthService.fireBase().currentUser!.email!;
+  String get userEmail => AuthService.fireBase().currentUser!.email;
 
   // Upon initialization, open the db.
   late final NoteService _noteService;
