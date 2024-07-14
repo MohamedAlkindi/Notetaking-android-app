@@ -1,11 +1,14 @@
 // Note: if any "Configuration not found" error is there, go to the console website, authorization, and enable the configuration for ur security option "email and password, facebook, apple, twitter.... sign in".
 
+import 'package:Notetaking/services/auth/bloc/auth_bloc.dart';
+import 'package:Notetaking/services/auth/firebase_auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:Notetaking/View/notes/notes_view.dart';
 import 'package:Notetaking/View/login_view.dart';
 import 'package:Notetaking/View/register_view.dart';
 import 'package:Notetaking/View/email_verification_view.dart';
 import 'package:Notetaking/View/homepage_view.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'Constants/routes.dart';
 import 'View/notes/create_update_note_view.dart';
 
@@ -16,24 +19,30 @@ void main() {
     debugShowCheckedModeBanner: false,
   );
 
-  runApp(MaterialApp(
-    title: 'Notetaking App',
+  runApp(
+    MaterialApp(
+      title: 'Notetaking App',
 
-    theme: ThemeData(
-      // Main theme of the app.
-      primarySwatch: Colors.deepPurple,
+      theme: ThemeData(
+        // Main theme of the app.
+        primarySwatch: Colors.deepPurple,
+      ),
+
+      // Choose and run the homepage.
+      // Using AuthBloc functionality in the main.dart
+      home: BlocProvider<AuthBloc>(
+        create: (context) => AuthBloc(FirebaseAuthProvider()),
+        child: const HomePage(),
+      ),
+
+      // Create routes to swich from login to register... and vise versa..
+      routes: {
+        loginRoute: (context) => const LoginView(),
+        registerRoute: (context) => const RegisterView(),
+        notesRoute: (context) => const NotesView(),
+        emailVerifyRoute: (context) => const EmailVerifyView(),
+        createOrUpdateNoteRoute: (context) => const CreateUpdateNote(),
+      },
     ),
-
-    // Choose and run the homepage.
-    home: const LoginView(),
-
-    // Create routes to swich from login to register... and vise versa..
-    routes: {
-      loginRoute: (context) => const LoginView(),
-      registerRoute: (context) => const RegisterView(),
-      notesRoute: (context) => const NotesView(),
-      emailVerifyRoute: (context) => const EmailVerifyView(),
-      createOrUpdateNoteRoute: (context) => const CreateUpdateNote(),
-    },
-  ));
+  );
 }

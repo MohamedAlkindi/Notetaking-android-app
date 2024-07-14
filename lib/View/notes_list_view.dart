@@ -1,5 +1,4 @@
 import 'package:Notetaking/Dialogs/delete_dialog.dart';
-import 'package:Notetaking/database_tables/notes_table.dart';
 import 'package:Notetaking/services/cloud/cloud_note.dart';
 import 'package:flutter/material.dart';
 

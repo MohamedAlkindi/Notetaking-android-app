@@ -1,6 +1,8 @@
-import 'package:Notetaking/services/auth/auth_service.dart';
+import 'package:Notetaking/services/auth/bloc/auth_bloc.dart';
+import 'package:Notetaking/services/auth/bloc/auth_event.dart';
 import 'package:flutter/material.dart';
 import 'package:Notetaking/Constants/routes.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../Dialogs/error_dialog.dart';
 import '../Error_Handling/auth_exceptions.dart';
 
@@ -130,26 +132,12 @@ class _LoginViewState extends State<LoginView> {
                     final inputPassword = _password.text;
 
                     try {
-                      await AuthService.fireBase().logIn(
-                        email: inputEmail,
-                        password: inputPassword,
-                      );
-
-                      final loggedinUser = AuthService.fireBase().currentUser;
-
-                      if (loggedinUser != null) {
-                        if (loggedinUser.isEmailVerified) {
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                            notesRoute,
-                            (_) => false,
+                      context.read<AuthBloc>().add(
+                            AuthEventLogIn(
+                              inputEmail,
+                              inputPassword,
+                            ),
                           );
-                        } else {
-                          // Use pushNamed so u give the user an option to go back if he entered wrong details.
-                          Navigator.of(context).pushNamed(
-                            emailVerifyRoute,
-                          );
-                        }
-                      }
                     } on NetworkExceptions {
                       showErrorDialog(
                           context, "Please check your internet connection.");

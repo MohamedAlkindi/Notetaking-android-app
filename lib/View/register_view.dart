@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:Notetaking/Error_Handling/auth_exceptions.dart';
 import 'package:Notetaking/services/auth/auth_service.dart';
 import 'package:flutter/material.dart';
@@ -167,9 +169,10 @@ class _RegisterViewState extends State<RegisterView> {
                     try {
                       if (inputPassword == inputRepeatPassword) {
                         await AuthService.fireBase().createUser(
-                            inputEmail: inputEmail,
-                            inputPassword: inputPassword,
-                            repeatPassword: inputRepeatPassword);
+                          inputEmail: inputEmail,
+                          inputPassword: inputPassword,
+                          repeatPassword: inputRepeatPassword,
+                        );
 
                         AuthService.fireBase().sendEmailVerification();
 
