@@ -1,5 +1,6 @@
 import 'package:Notetaking/services/auth/bloc/auth_bloc.dart';
 import 'package:Notetaking/services/auth/bloc/auth_event.dart';
+import 'package:Notetaking/services/auth/bloc/auth_state.dart';
 import 'package:flutter/material.dart';
 import 'package:Notetaking/Constants/routes.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -125,37 +126,39 @@ class _LoginViewState extends State<LoginView> {
               // Login button.
               Container(
                 margin: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                child: TextButton(
-                  onPressed: () async {
-                    // As the user clicks on the button create 2 variables and get the text from the text boxes using the TextEditingController.
-                    final inputEmail = _email.text;
-                    final inputPassword = _password.text;
+                child: BlocListener<AuthBloc, AuthState>(
+                  listener: (context, state) async {
+                    if (state is AuthStateLoggedOut) {
+                      if (state.exception is AuthExceptions) {
+                        await showErrorDialog(
+                            context, 'Please check your input details..');
+                      } else if (state.exception is GenericAuthException) {
+                        await showErrorDialog(context, 'Something is off.');
+                      }
+                    }
+                  },
+                  child: TextButton(
+                    onPressed: () async {
+                      // As the user clicks on the button create 2 variables and get the text from the text boxes using the TextEditingController.
+                      final inputEmail = _email.text;
+                      final inputPassword = _password.text;
 
-                    try {
                       context.read<AuthBloc>().add(
                             AuthEventLogIn(
                               inputEmail,
                               inputPassword,
                             ),
                           );
-                    } on NetworkExceptions {
-                      showErrorDialog(
-                          context, "Please check your internet connection.");
-                    } on AuthExceptions {
-                      showErrorDialog(
-                          context, "Please check your input details.");
-                    } on GenericAuthException {
-                      showErrorDialog(context, "An error has happened!");
-                    }
-                  },
-                  style: TextButton.styleFrom(
-                    backgroundColor: Color.fromARGB(255, 149, 54, 228),
-                    padding: const EdgeInsets.fromLTRB(100, 15, 100, 15),
-                  ),
-                  child: const Text(
-                    'Login',
-                    style: TextStyle(
-                      color: Colors.white,
+                    },
+                    style: TextButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 149, 54, 228),
+                      padding: const EdgeInsets.fromLTRB(100, 15, 100, 15),
+                    ),
+                    child: const Text(
+                      'Login',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),

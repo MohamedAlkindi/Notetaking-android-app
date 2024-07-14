@@ -17,12 +17,6 @@ class AuthStateLoggedIn extends AuthState {
   const AuthStateLoggedIn(this.user);
 }
 
-// Login errors that has the exception that caused the error.
-class AuthStateLoginFailure extends AuthState {
-  final Exception exception;
-  const AuthStateLoginFailure(this.exception);
-}
-
 // Email needs to be verified.
 class AuthStateNeedsVerification extends AuthState {
   const AuthStateNeedsVerification();
@@ -30,7 +24,8 @@ class AuthStateNeedsVerification extends AuthState {
 
 // Logging out.
 class AuthStateLoggedOut extends AuthState {
-  const AuthStateLoggedOut();
+  final Exception? exception;
+  const AuthStateLoggedOut(this.exception);
 }
 
 // Logging out errors.
