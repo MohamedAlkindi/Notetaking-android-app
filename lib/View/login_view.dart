@@ -69,7 +69,7 @@ class _LoginViewState extends State<LoginView> {
               // Email textfield.
               Container(
                 width: 450,
-                margin: const EdgeInsets.fromLTRB(0, 25, 0, 15),
+                margin: const EdgeInsets.fromLTRB(10, 25, 10, 15),
                 child: TextField(
                   keyboardType: TextInputType.emailAddress,
                   enableSuggestions: false,
@@ -95,7 +95,8 @@ class _LoginViewState extends State<LoginView> {
 
               // 'SizedBox' is more suitable if u won't use properties of 'Container'. Otherwise use 'Container' as it has more properties to work with.
               // Password textfield.
-              SizedBox(
+              Container(
+                margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                 width: 450,
                 child: TextField(
                   obscureText: _isObsecure,

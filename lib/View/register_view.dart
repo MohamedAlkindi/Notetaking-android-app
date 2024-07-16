@@ -67,7 +67,7 @@ class _RegisterViewState extends State<RegisterView> {
               ),
               Container(
                 width: 450,
-                margin: const EdgeInsets.fromLTRB(0, 25, 0, 15),
+                margin: const EdgeInsets.fromLTRB(10, 25, 10, 15),
 
                 // Email textfield.
                 child: TextField(
@@ -98,7 +98,7 @@ class _RegisterViewState extends State<RegisterView> {
               // Password textField.
               Container(
                 width: 450,
-                margin: const EdgeInsets.fromLTRB(0, 0, 0, 15),
+                margin: const EdgeInsets.fromLTRB(10, 0, 10, 15),
                 // Password textbox.
                 child: TextField(
                   obscureText: _isObsecure,
@@ -130,7 +130,8 @@ class _RegisterViewState extends State<RegisterView> {
               ),
 
               // Repeat pass textField.
-              SizedBox(
+              Container(
+                margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                 width: 450,
                 child: TextField(
                   obscureText: _isObsecure,
