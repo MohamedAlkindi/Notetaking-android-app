@@ -1,6 +1,7 @@
 import 'package:Notetaking/View/login_view.dart';
 import 'package:Notetaking/View/notes/notes_view.dart';
 import 'package:Notetaking/View/register_view.dart';
+import 'package:Notetaking/helpers/loading/loading_screen.dart';
 import 'package:Notetaking/services/auth/bloc/auth_event.dart';
 import 'package:Notetaking/services/auth/bloc/auth_state.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class HomePage extends StatelessWidget {
     // use .add() to communicate with bloc.
     // Read AuthBloc from the context as u injected it inside the context in the main.dart file.
     context.read<AuthBloc>().add(const AuthEventInitialize());
-    return BlocBuilder<AuthBloc, AuthState>(
+    return BlocConsumer<AuthBloc, AuthState>(
       builder: (context, state) {
         if (state is AuthStateLoggedIn) {
           return const NotesView();
@@ -28,6 +29,16 @@ class HomePage extends StatelessWidget {
           return const RegisterView();
         } else {
           return const CircularProgressIndicator();
+        }
+      },
+      listener: (context, state) {
+        if (state.isLoading) {
+          LoadingScreen().show(
+            context: context,
+            text: state.loadingText ?? 'Please wait a moment',
+          );
+        } else {
+          LoadingScreen().hide();
         }
       },
     );
