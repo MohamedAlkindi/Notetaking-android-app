@@ -1,4 +1,3 @@
-import 'package:Notetaking/Dialogs/loading_dialog.dart';
 import 'package:Notetaking/services/auth/bloc/auth_bloc.dart';
 import 'package:Notetaking/services/auth/bloc/auth_event.dart';
 import 'package:Notetaking/services/auth/bloc/auth_state.dart';
@@ -172,6 +171,14 @@ class _LoginViewState extends State<LoginView> {
                   },
                   child: const Text('Not registered? Click here! 🖐🏼'),
                 ),
+                TextButton(
+                  onPressed: () {
+                    context.read<AuthBloc>().add(
+                          const AuthEventForgotPassword(),
+                        );
+                  },
+                  child: const Text('Forgot Password?'),
+                )
               ],
             ),
           ),

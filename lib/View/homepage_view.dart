@@ -1,3 +1,4 @@
+import 'package:Notetaking/View/forgot_password_view.dart';
 import 'package:Notetaking/View/login_view.dart';
 import 'package:Notetaking/View/notes/notes_view.dart';
 import 'package:Notetaking/View/register_view.dart';
@@ -27,6 +28,8 @@ class HomePage extends StatelessWidget {
           return const LoginView();
         } else if (state is AuthStateRegistering) {
           return const RegisterView();
+        } else if (state is AuthStateForgotPassword) {
+          return const ForgotPasswordView();
         } else {
           return const CircularProgressIndicator();
         }
