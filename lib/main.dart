@@ -3,10 +3,6 @@
 import 'package:Notetaking/services/auth/bloc/auth_bloc.dart';
 import 'package:Notetaking/services/auth/firebase_auth_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:Notetaking/View/notes/notes_view.dart';
-import 'package:Notetaking/View/login_view.dart';
-import 'package:Notetaking/View/register_view.dart';
-import 'package:Notetaking/View/email_verification_view.dart';
 import 'package:Notetaking/View/homepage_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'Constants/routes.dart';
@@ -37,10 +33,6 @@ void main() {
 
       // Create routes to swich from login to register... and vise versa..
       routes: {
-        loginRoute: (context) => const LoginView(),
-        registerRoute: (context) => const RegisterView(),
-        notesRoute: (context) => const NotesView(),
-        emailVerifyRoute: (context) => const EmailVerifyView(),
         createOrUpdateNoteRoute: (context) => const CreateUpdateNote(),
       },
     ),

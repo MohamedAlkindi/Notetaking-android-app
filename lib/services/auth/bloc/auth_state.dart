@@ -1,4 +1,5 @@
 import 'package:Notetaking/services/auth/auth_user.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart' show immutable;
 
 @immutable
@@ -6,9 +7,9 @@ abstract class AuthState {
   const AuthState();
 }
 
-// Loading state.
-class AuthStateLoading extends AuthState {
-  const AuthStateLoading();
+// unintialized state, just to call the initialization method.
+class AuthStateUninitialized extends AuthState {
+  const AuthStateUninitialized();
 }
 
 // Login state that has the user.
@@ -23,13 +24,20 @@ class AuthStateNeedsVerification extends AuthState {
 }
 
 // Logging out.
-class AuthStateLoggedOut extends AuthState {
+class AuthStateLoggedOut extends AuthState with EquatableMixin {
   final Exception? exception;
-  const AuthStateLoggedOut(this.exception);
+  final bool isLoading;
+  const AuthStateLoggedOut({
+    required this.exception,
+    required this.isLoading,
+  });
+
+  @override
+  List<Object?> get props => [exception, isLoading];
 }
 
-// Logging out errors.
-class AuthStateLogOutFailures extends AuthState {
-  final Exception exception;
-  const AuthStateLogOutFailures(this.exception);
+// for the registration if its all good or something bad happened.
+class AuthStateRegistering extends AuthState {
+  final Exception? exception;
+  const AuthStateRegistering(this.exception);
 }
