@@ -4,33 +4,44 @@ import 'package:flutter/foundation.dart' show immutable;
 
 @immutable
 abstract class AuthState {
-  const AuthState();
+  final bool isLoading;
+  final String? loadingText;
+  const AuthState({
+    required this.isLoading,
+    this.loadingText = 'Please wait a moment..',
+  });
 }
 
 // unintialized state, just to call the initialization method.
 class AuthStateUninitialized extends AuthState {
-  const AuthStateUninitialized();
+  const AuthStateUninitialized({required bool isLoading})
+      : super(isLoading: isLoading);
 }
 
 // Login state that has the user.
 class AuthStateLoggedIn extends AuthState {
   final AuthUser user;
-  const AuthStateLoggedIn(this.user);
+  const AuthStateLoggedIn({required this.user, required bool isLoading})
+      : super(isLoading: isLoading);
 }
 
 // Email needs to be verified.
 class AuthStateNeedsVerification extends AuthState {
-  const AuthStateNeedsVerification();
+  const AuthStateNeedsVerification({required bool isLoading})
+      : super(isLoading: isLoading);
 }
 
 // Logging out.
 class AuthStateLoggedOut extends AuthState with EquatableMixin {
   final Exception? exception;
-  final bool isLoading;
   const AuthStateLoggedOut({
     required this.exception,
-    required this.isLoading,
-  });
+    required bool isLoading,
+    String? loadingText,
+  }) : super(
+          isLoading: isLoading,
+          loadingText: loadingText,
+        );
 
   @override
   List<Object?> get props => [exception, isLoading];
@@ -39,5 +50,6 @@ class AuthStateLoggedOut extends AuthState with EquatableMixin {
 // for the registration if its all good or something bad happened.
 class AuthStateRegistering extends AuthState {
   final Exception? exception;
-  const AuthStateRegistering(this.exception);
+  const AuthStateRegistering({required this.exception, required bool isLoading})
+      : super(isLoading: isLoading);
 }

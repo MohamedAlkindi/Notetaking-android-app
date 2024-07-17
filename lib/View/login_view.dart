@@ -20,8 +20,6 @@ class _LoginViewState extends State<LoginView> {
   // Declaring a variable as late make sure that the variables will have values, but in the future.
   late final TextEditingController _email;
   late final TextEditingController _password;
-  // to hold email, password data when closing the dialog.
-  CloseDialog? _closeDialogHandle;
 
   late FocusNode _myFocusNote;
 
@@ -48,18 +46,6 @@ class _LoginViewState extends State<LoginView> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) async {
         if (state is AuthStateLoggedOut) {
-          final closeDialog = _closeDialogHandle;
-
-          if (!state.isLoading && closeDialog != null) {
-            closeDialog();
-            _closeDialogHandle = null;
-          } else if (state.isLoading && closeDialog == null) {
-            _closeDialogHandle = showLoadingDialog(
-              context: context,
-              text: 'Loading...',
-            );
-          }
-
           if (state.exception is AuthExceptions) {
             await showErrorDialog(context, 'Please check your input details..');
           } else if (state.exception is GenericAuthException) {
