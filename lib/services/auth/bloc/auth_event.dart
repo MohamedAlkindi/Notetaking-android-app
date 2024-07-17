@@ -44,3 +44,10 @@ class AuthEventShouldRegister extends AuthEvent {
 class AuthEventSendEmailVerification extends AuthEvent {
   const AuthEventSendEmailVerification();
 }
+
+// forgot pass.
+class AuthEventForgotPassword extends AuthEvent {
+  final String? email;
+
+  const AuthEventForgotPassword({this.email});
+}
