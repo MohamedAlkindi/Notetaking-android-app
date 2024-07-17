@@ -3,7 +3,6 @@ import 'package:Notetaking/services/auth/bloc/auth_bloc.dart';
 import 'package:Notetaking/services/auth/bloc/auth_event.dart';
 import 'package:Notetaking/services/auth/bloc/auth_state.dart';
 import 'package:flutter/material.dart';
-import 'package:Notetaking/Constants/routes.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../Dialogs/error_dialog.dart';
 import '../Error_Handling/auth_exceptions.dart';
