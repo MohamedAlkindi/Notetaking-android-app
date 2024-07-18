@@ -1,6 +1,19 @@
-// find a fix for the exceptions names for firebaseauthexceptions then add a class for each exception with similar implementation to this one.*Not worked on because it makes brute-force easier because they can identify the issue in their hack.
-// any other FirebaseAuth exceptions.
-class AuthExceptions implements Exception {}
+// login exceptions.
+class AuthExceptionUserDisabled implements Exception {}
+
+class AuthExceptionWrongPassword implements Exception {}
+
+// Register exceptions.
+class AuthExceptionEmailAlreadyInUse implements Exception {}
+
+class AuthExceptionOperationNotAllowed implements Exception {}
+
+class AuthExceptionWeakPassword implements Exception {}
+
+// General exceptions.
+class AuthExceptionUserNotFound implements Exception {}
+
+class AuthExceptionInvalidEmail implements Exception {}
 
 // Network error.
 class NetworkExceptions implements Exception {}
