@@ -49,15 +49,20 @@ class _RegisterViewState extends State<RegisterView> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) async {
         if (state is AuthStateRegistering) {
-          if (_password.text != _repeatPassword.text) {
+          print(state.exception.toString());
+          if (state.exception is PasswordsNotMatchException) {
             await showErrorDialog(context, 'Passwords dont match');
+          } else if (state.exception is AuthExceptionInvalidEmail) {
+            await showErrorDialog(context, 'Please enter a valid email.');
+          } else if (state.exception is AuthExceptionEmailAlreadyInUse) {
+            await showErrorDialog(context, 'This email is already in use.');
+          } else if (state.exception is AuthExceptionWeakPassword) {
+            await showErrorDialog(context, 'Please type a stronger password.');
           } else if (state.exception is NetworkExceptions) {
             await showErrorDialog(
                 context, 'Please check your internet connection');
-          } else if (state.exception is AuthExceptions) {
-            await showErrorDialog(context, 'Please check your input details');
-          } else if (state.exception is GenericAuthException) {
-            await showErrorDialog(context, 'An error has occured');
+          } else {
+            await showErrorDialog(context, 'Something went wrong!');
           }
         }
       },

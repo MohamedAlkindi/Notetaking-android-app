@@ -45,10 +45,16 @@ class _LoginViewState extends State<LoginView> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) async {
         if (state is AuthStateLoggedOut) {
-          if (state.exception is AuthExceptions) {
-            await showErrorDialog(context, 'Please check your input details..');
-          } else if (state.exception is GenericAuthException) {
-            await showErrorDialog(context, 'Something is off.');
+          if (state.exception is AuthExceptionInvalidEmail ||
+              state.exception is AuthExceptionUserNotFound) {
+            await showErrorDialog(context, 'You have entered a wrong email.');
+          } else if (state.exception is AuthExceptionWrongPassword) {
+            await showErrorDialog(context, 'Wrong credentials.');
+          } else if (state.exception is NetworkExceptions) {
+            await showErrorDialog(
+                context, 'Please check your internet connection');
+          } else {
+            await showErrorDialog(context, 'Something went wrong!');
           }
         }
       },

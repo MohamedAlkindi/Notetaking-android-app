@@ -47,10 +47,18 @@ class FirebaseAuthProvider implements AuthProvider {
       } else {
         throw UserNotLoggedInAuthExceptions();
       }
-    } on FirebaseAuthException catch (_) {
-      throw AuthExceptions();
-    } catch (_) {
-      throw GenericAuthException();
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'firebase_auth/invalid-email') {
+        throw AuthExceptionInvalidEmail();
+      } else if (e.code == 'firebase_auth/email-already-in-use') {
+        throw AuthExceptionEmailAlreadyInUse();
+      } else if (e.code == 'firebase_auth/weak-password') {
+        throw AuthExceptionWeakPassword();
+      } else if (e.code == 'firebase_auth/network-error') {
+        throw NetworkExceptions;
+      } else {
+        throw GenericAuthException();
+      }
     }
   }
 
@@ -71,8 +79,16 @@ class FirebaseAuthProvider implements AuthProvider {
       } else {
         throw UserNotLoggedInAuthExceptions();
       }
-    } on FirebaseAuthException catch (_) {
-      throw AuthExceptions();
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'firebase_auth/invalid-email') {
+        throw AuthExceptionInvalidEmail;
+      } else if (e.code == 'firebase_auth/user-not-found') {
+        throw AuthExceptionUserNotFound;
+      } else if (e.code == 'firebase_auth/wrong-password') {
+        throw AuthExceptionWrongPassword();
+      } else {
+        throw NetworkExceptions;
+      }
     } catch (_) {
       throw GenericAuthException();
     }
@@ -116,9 +132,9 @@ class FirebaseAuthProvider implements AuthProvider {
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case 'firebase_auth/invalid-email':
-          throw AuthExceptions;
+          throw AuthExceptionInvalidEmail;
         case 'firebase_auth/user-not-found':
-          throw AuthExceptions;
+          throw AuthExceptionUserNotFound;
         default:
           throw GenericAuthException;
       }
