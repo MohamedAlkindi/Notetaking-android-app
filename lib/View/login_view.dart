@@ -47,14 +47,25 @@ class _LoginViewState extends State<LoginView> {
         if (state is AuthStateLoggedOut) {
           if (state.exception is AuthExceptionInvalidEmail ||
               state.exception is AuthExceptionUserNotFound) {
-            await showErrorDialog(context, 'You have entered a wrong email.');
+            await showErrorDialog(
+              context,
+              'You have entered a wrong email.',
+            );
+          } else if (state.exception is EmptyInputException) {
+            await showErrorDialog(
+              context,
+              'Please fill all the input fields.',
+            );
           } else if (state.exception is AuthExceptionWrongPassword) {
-            await showErrorDialog(context, 'Wrong credentials.');
+            await showErrorDialog(
+              context,
+              'Wrong credentials.',
+            );
           } else if (state.exception is NetworkExceptions) {
             await showErrorDialog(
-                context, 'Please check your internet connection');
-          } else {
-            await showErrorDialog(context, 'Something went wrong!');
+              context,
+              'Please check your internet connection',
+            );
           }
         }
       },

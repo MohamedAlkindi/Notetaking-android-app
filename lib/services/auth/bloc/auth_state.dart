@@ -66,6 +66,11 @@ class AuthStateForgotPassword extends AuthState {
       : super(isLoading: isLoading);
 }
 
-class AuthStateLoginPage extends AuthState {
-  const AuthStateLoginPage() : super(isLoading: false);
+class AuthStateLoggingIn extends AuthState {
+  const AuthStateLoggingIn() : super(isLoading: false);
+}
+
+// for the homepage to just return the homepage.
+class AuthStateBlank extends AuthState {
+  const AuthStateBlank() : super(isLoading: false);
 }

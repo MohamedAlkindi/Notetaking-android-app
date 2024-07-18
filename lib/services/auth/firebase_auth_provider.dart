@@ -32,7 +32,9 @@ class FirebaseAuthProvider implements AuthProvider {
     required String repeatPassword,
   }) async {
     try {
-      if (inputPassword == repeatPassword) {
+      if (inputEmail == "" || inputPassword == "" || repeatPassword == "") {
+        throw EmptyInputException();
+      } else if (inputPassword == repeatPassword) {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: inputEmail,
           password: inputPassword,
@@ -48,13 +50,13 @@ class FirebaseAuthProvider implements AuthProvider {
         throw UserNotLoggedInAuthExceptions();
       }
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'firebase_auth/invalid-email') {
+      if (e.code == 'invalid-email') {
         throw AuthExceptionInvalidEmail();
-      } else if (e.code == 'firebase_auth/email-already-in-use') {
+      } else if (e.code == 'email-already-in-use') {
         throw AuthExceptionEmailAlreadyInUse();
-      } else if (e.code == 'firebase_auth/weak-password') {
+      } else if (e.code == 'weak-password') {
         throw AuthExceptionWeakPassword();
-      } else if (e.code == 'firebase_auth/network-error') {
+      } else if (e.code == 'network-error') {
         throw NetworkExceptions;
       } else {
         throw GenericAuthException();
@@ -68,6 +70,9 @@ class FirebaseAuthProvider implements AuthProvider {
     required String password,
   }) async {
     try {
+      if (email == "" || password == "") {
+        throw EmptyInputException();
+      }
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
@@ -80,17 +85,17 @@ class FirebaseAuthProvider implements AuthProvider {
         throw UserNotLoggedInAuthExceptions();
       }
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'firebase_auth/invalid-email') {
-        throw AuthExceptionInvalidEmail;
-      } else if (e.code == 'firebase_auth/user-not-found') {
-        throw AuthExceptionUserNotFound;
-      } else if (e.code == 'firebase_auth/wrong-password') {
+      if (e.code == 'invalid-email') {
+        throw AuthExceptionInvalidEmail();
+      } else if (e.code == 'user-not-found') {
+        throw AuthExceptionUserNotFound();
+      } else if (e.code == 'wrong-password') {
         throw AuthExceptionWrongPassword();
+      } else if (e.code == 'network-request-failed') {
+        throw NetworkExceptions();
       } else {
-        throw NetworkExceptions;
+        throw GenericAuthException();
       }
-    } catch (_) {
-      throw GenericAuthException();
     }
   }
 

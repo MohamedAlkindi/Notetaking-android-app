@@ -24,3 +24,5 @@ class GenericAuthException implements Exception {}
 class PasswordsNotMatchException implements Exception {}
 
 class UserNotLoggedInAuthExceptions implements Exception {}
+
+class EmptyInputException implements Exception {}

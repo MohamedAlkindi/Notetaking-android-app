@@ -45,6 +45,11 @@ class AuthEventShouldLogin extends AuthEvent {
   const AuthEventShouldLogin();
 }
 
+// Homepage.
+class AuthEventBlank extends AuthEvent {
+  const AuthEventBlank();
+}
+
 // Send email verification.
 class AuthEventSendEmailVerification extends AuthEvent {
   const AuthEventSendEmailVerification();
