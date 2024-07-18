@@ -148,7 +148,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           ),
         );
         final email = event.email;
-        if (email == null) {
+        if (email == null || email == "") {
           return; /* just to show the FP screen */
         }
         emit(
