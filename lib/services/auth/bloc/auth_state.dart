@@ -65,3 +65,7 @@ class AuthStateForgotPassword extends AuthState {
       required bool isLoading})
       : super(isLoading: isLoading);
 }
+
+class AuthStateLoginPage extends AuthState {
+  const AuthStateLoginPage() : super(isLoading: false);
+}

@@ -22,17 +22,92 @@ class HomePage extends StatelessWidget {
       builder: (context, state) {
         if (state is AuthStateLoggedIn) {
           return const NotesView();
+        } else if (state is AuthStateLoginPage) {
+          return const LoginView();
         } else if (state is AuthStateNeedsVerification) {
           return const EmailVerifyView();
-        } else if (state is AuthStateLoggedOut) {
-          return const LoginView();
         } else if (state is AuthStateRegistering) {
           return const RegisterView();
         } else if (state is AuthStateForgotPassword) {
           return const ForgotPasswordView();
-        } else {
-          return const CircularProgressIndicator();
+        } else if (state is AuthStateLoggedOut) {
+          return const LoginView();
         }
+        return Scaffold(
+          backgroundColor: Colors.white,
+          body: Center(
+            // To make the column scrollable.
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/images/icon.png',
+                    height: 180,
+                  ),
+                  Container(
+                    margin: const EdgeInsets.fromLTRB(0, 20, 0, 10),
+                    child: const Text(
+                      'Welcome!\n\nYour notes are safe and sound with us 😁',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 26,
+                        fontFamily: 'Georgia',
+                      ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.fromLTRB(0, 20, 50, 20),
+                        child: TextButton(
+                          onPressed: () async {
+                            context
+                                .read<AuthBloc>()
+                                .add(const AuthEventShouldLogin());
+                          },
+                          style: TextButton.styleFrom(
+                            backgroundColor:
+                                const Color.fromARGB(255, 149, 54, 228),
+                            padding: const EdgeInsets.fromLTRB(50, 15, 50, 15),
+                          ),
+                          child: const Text(
+                            'Login',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                        child: TextButton(
+                          onPressed: () async {
+                            context
+                                .read<AuthBloc>()
+                                .add(const AuthEventShouldRegister());
+                          },
+                          style: TextButton.styleFrom(
+                            backgroundColor:
+                                const Color.fromARGB(255, 149, 54, 228),
+                            padding: const EdgeInsets.fromLTRB(43, 15, 43, 15),
+                          ),
+                          child: const Text(
+                            'Register',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
+        );
       },
       listener: (context, state) {
         if (state.isLoading) {

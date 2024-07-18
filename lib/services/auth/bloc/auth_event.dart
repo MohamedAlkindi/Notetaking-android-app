@@ -40,6 +40,11 @@ class AuthEventShouldRegister extends AuthEvent {
   const AuthEventShouldRegister();
 }
 
+// For the login button.
+class AuthEventShouldLogin extends AuthEvent {
+  const AuthEventShouldLogin();
+}
+
 // Send email verification.
 class AuthEventSendEmailVerification extends AuthEvent {
   const AuthEventSendEmailVerification();

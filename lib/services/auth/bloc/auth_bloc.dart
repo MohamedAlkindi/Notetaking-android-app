@@ -189,5 +189,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
       },
     );
+
+    on<AuthEventShouldLogin>(
+      (event, emit) {
+        emit(
+          const AuthStateLoginPage(),
+        );
+      },
+    );
   }
 }
