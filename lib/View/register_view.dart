@@ -88,6 +88,7 @@ class _RegisterViewState extends State<RegisterView> {
 
                   // Email textfield.
                   child: TextField(
+                    autofocus: true,
                     keyboardType: TextInputType
                         .emailAddress, // Adds the '@' symbol on keyboard.
                     enableSuggestions: false,

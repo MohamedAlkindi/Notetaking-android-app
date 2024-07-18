@@ -80,6 +80,7 @@ class _LoginViewState extends State<LoginView> {
                   width: 450,
                   margin: const EdgeInsets.fromLTRB(10, 25, 10, 15),
                   child: TextField(
+                    autofocus: true,
                     keyboardType: TextInputType.emailAddress,
                     enableSuggestions: false,
                     autocorrect: false,

@@ -16,11 +16,6 @@ class _EmailVerifyViewState extends State<EmailVerifyView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text(
-          'Email Verification',
-        ),
-      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -30,10 +25,10 @@ class _EmailVerifyViewState extends State<EmailVerifyView> {
               height: 210,
             ),
             const Text(
-              'We have sent you an email verification....',
+              'We have sent you an email verification...',
               style: TextStyle(
                 fontSize: 20,
-                fontFamily: 'Roboto',
+                fontFamily: 'Georgia',
               ),
             ),
             Container(
@@ -45,11 +40,14 @@ class _EmailVerifyViewState extends State<EmailVerifyView> {
                       .add(const AuthEventSendEmailVerification());
                 },
                 style: TextButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(224, 199, 201, 228),
-                  padding: const EdgeInsets.fromLTRB(40, 15, 40, 15),
+                  backgroundColor: const Color.fromARGB(255, 149, 54, 228),
+                  padding: const EdgeInsets.fromLTRB(100, 15, 100, 15),
                 ),
                 child: const Text(
                   'Click here to resend the email.. 📨',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
@@ -59,10 +57,6 @@ class _EmailVerifyViewState extends State<EmailVerifyView> {
                 onPressed: () async {
                   context.read<AuthBloc>().add(const AuthEventLogOut());
                 },
-                style: TextButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(224, 199, 201, 228),
-                  padding: const EdgeInsets.fromLTRB(40, 15, 40, 15),
-                ),
                 child: const Text(
                   'Go to login page.',
                 ),
