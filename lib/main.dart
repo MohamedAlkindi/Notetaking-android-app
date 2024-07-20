@@ -1,5 +1,4 @@
 // Note: if any "Configuration not found" error is there, go to the console website, authorization, and enable the configuration for ur security option "email and password, facebook, apple, twitter.... sign in".
-
 import 'package:Notetaking/services/auth/bloc/auth_bloc.dart';
 import 'package:Notetaking/services/auth/firebase_auth_provider.dart';
 import 'package:flutter/material.dart';

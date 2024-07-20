@@ -70,134 +70,163 @@ class _LoginViewState extends State<LoginView> {
         }
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
-        body: Center(
-          // To make the column scrollable.
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  'assets/images/login.png',
-                  height: 180,
-                ),
-                Container(
-                  margin: const EdgeInsets.fromLTRB(0, 20, 0, 10),
-                  child: const Text(
-                    'Welcome Back!',
-                    style: TextStyle(
-                      fontSize: 26,
-                      fontFamily: 'Georgia',
-                    ),
-                  ),
-                ),
-                // Creating 2 'textboxes' one for email and the second for password, each in their own 'Container' to put some styling to them.
-                // Email textfield.
-                Container(
-                  width: 450,
-                  margin: const EdgeInsets.fromLTRB(10, 25, 10, 15),
-                  child: TextField(
-                    autofocus: true,
-                    keyboardType: TextInputType.emailAddress,
-                    enableSuggestions: false,
-                    autocorrect: false,
-                    controller: _email,
-                    decoration: const InputDecoration(
-                      hintText: 'Enter Email ',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10.0),
+        body: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/bg.png'),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Align(
+            alignment: Alignment.center,
+            child: Container(
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(204, 255, 255, 255),
+                borderRadius: BorderRadius.circular(100),
+                boxShadow: [
+                  BoxShadow(
+                    color:
+                        const Color.fromARGB(255, 97, 98, 100).withOpacity(0.3),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: const Offset(5, 5),
+                  )
+                ],
+              ),
+              width: 630,
+              height: 650,
+              child: Center(
+                // To make the column scrollable.
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/images/login.png',
+                        height: 180,
+                      ),
+                      Container(
+                        margin: const EdgeInsets.fromLTRB(0, 20, 0, 10),
+                        child: const Text(
+                          'Welcome Back!',
+                          style: TextStyle(
+                            fontSize: 26,
+                            fontFamily: 'Georgia',
+                          ),
                         ),
                       ),
-                      suffixIcon: Icon(
-                        Icons.email,
-                      ),
-                    ),
-                    textInputAction: TextInputAction.next,
-                    onSubmitted: (term) {
-                      FocusScope.of(context).requestFocus(_myFocusNote);
-                    },
-                  ),
-                ),
-
-                // 'SizedBox' is more suitable if u won't use properties of 'Container'. Otherwise use 'Container' as it has more properties to work with.
-                // Password textfield.
-                Container(
-                  margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  width: 450,
-                  child: TextField(
-                    obscureText: _isObsecure,
-                    enableSuggestions: false,
-                    autocorrect: false,
-                    controller: _password,
-                    decoration: InputDecoration(
-                      hintText: 'Enter Password ',
-                      border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10.0),
-                        ),
-                      ),
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          setState(() => _isObsecure = !_isObsecure);
-                        },
-                        icon: const Icon(
-                          Icons.remove_red_eye,
-                        ),
-                      ),
-                    ),
-                    focusNode: _myFocusNote,
-                    textInputAction: TextInputAction.done,
-                  ),
-                ),
-
-                // Login button.
-                Container(
-                  margin: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                  child: TextButton(
-                    onPressed: () async {
-                      // As the user clicks on the button create 2 variables and get the text from the text boxes using the TextEditingController.
-                      final inputEmail = _email.text;
-                      final inputPassword = _password.text;
-
-                      context.read<AuthBloc>().add(
-                            AuthEventLogIn(
-                              inputEmail,
-                              inputPassword,
+                      // Creating 2 'textboxes' one for email and the second for password, each in their own 'Container' to put some styling to them.
+                      // Email textfield.
+                      Container(
+                        width: 450,
+                        margin: const EdgeInsets.fromLTRB(10, 25, 10, 15),
+                        child: TextField(
+                          autofocus: true,
+                          keyboardType: TextInputType.emailAddress,
+                          enableSuggestions: false,
+                          autocorrect: false,
+                          controller: _email,
+                          decoration: const InputDecoration(
+                            hintText: 'Enter Email ',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10.0),
+                              ),
                             ),
-                          );
-                    },
-                    style: TextButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 149, 54, 228),
-                      padding: const EdgeInsets.fromLTRB(100, 15, 100, 15),
-                    ),
-                    child: const Text(
-                      'Login',
-                      style: TextStyle(
-                        color: Colors.white,
+                            suffixIcon: Icon(
+                              Icons.email,
+                            ),
+                          ),
+                          textInputAction: TextInputAction.next,
+                          onSubmitted: (term) {
+                            FocusScope.of(context).requestFocus(_myFocusNote);
+                          },
+                        ),
                       ),
-                    ),
+
+                      // 'SizedBox' is more suitable if u won't use properties of 'Container'. Otherwise use 'Container' as it has more properties to work with.
+                      // Password textfield.
+                      Container(
+                        margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        width: 450,
+                        child: TextField(
+                          obscureText: _isObsecure,
+                          enableSuggestions: false,
+                          autocorrect: false,
+                          controller: _password,
+                          decoration: InputDecoration(
+                            hintText: 'Enter Password ',
+                            border: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10.0),
+                              ),
+                            ),
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                setState(() => _isObsecure = !_isObsecure);
+                              },
+                              icon: const Icon(
+                                Icons.remove_red_eye,
+                              ),
+                            ),
+                          ),
+                          focusNode: _myFocusNote,
+                          textInputAction: TextInputAction.done,
+                        ),
+                      ),
+
+                      // Login button.
+                      Container(
+                        margin: const EdgeInsets.fromLTRB(0, 30, 0, 25),
+                        child: TextButton(
+                          onPressed: () async {
+                            // As the user clicks on the button create 2 variables and get the text from the text boxes using the TextEditingController.
+                            final inputEmail = _email.text;
+                            final inputPassword = _password.text;
+
+                            context.read<AuthBloc>().add(
+                                  AuthEventLogIn(
+                                    inputEmail,
+                                    inputPassword,
+                                  ),
+                                );
+                          },
+                          style: TextButton.styleFrom(
+                            backgroundColor:
+                                const Color.fromARGB(255, 149, 54, 228),
+                            padding:
+                                const EdgeInsets.fromLTRB(100, 15, 100, 15),
+                          ),
+                          child: const Text(
+                            'Login',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      // Register view button.
+                      TextButton(
+                        onPressed: () {
+                          context
+                              .read<AuthBloc>()
+                              .add(const AuthEventShouldRegister());
+                        },
+                        child: const Text('Not registered? Click here! 🖐🏼'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          context.read<AuthBloc>().add(
+                                const AuthEventForgotPassword(),
+                              );
+                        },
+                        child: const Text('Forgot Password?'),
+                      )
+                    ],
                   ),
                 ),
-
-                // Register view button.
-                TextButton(
-                  onPressed: () {
-                    context
-                        .read<AuthBloc>()
-                        .add(const AuthEventShouldRegister());
-                  },
-                  child: const Text('Not registered? Click here! 🖐🏼'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    context.read<AuthBloc>().add(
-                          const AuthEventForgotPassword(),
-                        );
-                  },
-                  child: const Text('Forgot Password?'),
-                )
-              ],
+              ),
             ),
           ),
         ),

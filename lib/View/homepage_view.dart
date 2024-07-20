@@ -34,78 +34,106 @@ class HomePage extends StatelessWidget {
           return const LoginView();
         } else {
           return Scaffold(
-            backgroundColor: Colors.white,
-            body: Center(
-              // To make the column scrollable.
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      'assets/images/icon.png',
-                      height: 180,
-                    ),
-                    Container(
-                      margin: const EdgeInsets.fromLTRB(0, 20, 0, 10),
-                      child: const Text(
-                        'Welcome!\n\nYour notes are safe and sound with us 😁',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 26,
-                          fontFamily: 'Georgia',
-                        ),
+            body: Container(
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/bg.png'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Align(
+                alignment: Alignment.center,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(204, 255, 255, 255),
+                    borderRadius: BorderRadius.circular(100),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color.fromARGB(255, 97, 98, 100)
+                            .withOpacity(0.3),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: const Offset(5, 5),
+                      )
+                    ],
+                  ),
+                  width: 550,
+                  height: 500,
+                  child: Center(
+                    // To make the column scrollable.
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/images/icon.png',
+                            height: 180,
+                          ),
+                          Container(
+                            margin: const EdgeInsets.fromLTRB(0, 20, 0, 10),
+                            child: const Text(
+                              '\nYour Thoughts, Our Canvas. 😉\n',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 26,
+                                fontFamily: 'Georgia',
+                              ),
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                margin:
+                                    const EdgeInsets.fromLTRB(0, 20, 50, 20),
+                                child: TextButton(
+                                  onPressed: () async {
+                                    context
+                                        .read<AuthBloc>()
+                                        .add(const AuthEventShouldLogin());
+                                  },
+                                  style: TextButton.styleFrom(
+                                    backgroundColor:
+                                        const Color.fromARGB(255, 149, 54, 228),
+                                    padding: const EdgeInsets.fromLTRB(
+                                        50, 15, 50, 15),
+                                  ),
+                                  child: const Text(
+                                    'Login',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                margin: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                                child: TextButton(
+                                  onPressed: () async {
+                                    context
+                                        .read<AuthBloc>()
+                                        .add(const AuthEventShouldRegister());
+                                  },
+                                  style: TextButton.styleFrom(
+                                    backgroundColor:
+                                        const Color.fromARGB(255, 149, 54, 228),
+                                    padding: const EdgeInsets.fromLTRB(
+                                        43, 15, 43, 15),
+                                  ),
+                                  child: const Text(
+                                    'Register',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.fromLTRB(0, 20, 50, 20),
-                          child: TextButton(
-                            onPressed: () async {
-                              context
-                                  .read<AuthBloc>()
-                                  .add(const AuthEventShouldLogin());
-                            },
-                            style: TextButton.styleFrom(
-                              backgroundColor:
-                                  const Color.fromARGB(255, 149, 54, 228),
-                              padding:
-                                  const EdgeInsets.fromLTRB(50, 15, 50, 15),
-                            ),
-                            child: const Text(
-                              'Login',
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                          child: TextButton(
-                            onPressed: () async {
-                              context
-                                  .read<AuthBloc>()
-                                  .add(const AuthEventShouldRegister());
-                            },
-                            style: TextButton.styleFrom(
-                              backgroundColor:
-                                  const Color.fromARGB(255, 149, 54, 228),
-                              padding:
-                                  const EdgeInsets.fromLTRB(43, 15, 43, 15),
-                            ),
-                            child: const Text(
-                              'Register',
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
+                  ),
                 ),
               ),
             ),
@@ -123,37 +151,5 @@ class HomePage extends StatelessWidget {
         }
       },
     );
-
-    // Creates a widget or return one based on a condition in the 'Snapshot', takes 2 parameters 'future' which has the Future<> function, and 'builder' which will be used with the snapshot to return the widget.
-    // return FutureBuilder(
-    //   future: AuthService.fireBase().initializer(),
-
-    //   // snapshot is a state, u can get the result of the future using it.
-    //   builder: (context, snapshot) {
-    //     switch (snapshot.connectionState) {
-    //       // If the ConnectionState returned 'Done'...
-    //       case ConnectionState.done:
-    //         final user = AuthService.fireBase().currentUser;
-    //         if (user != null) {
-    //           if (user.isEmailVerified) {
-    //             return const NotesView();
-    //           } else {
-    //             return const EmailVerifyView();
-    //           }
-    //         } else {
-    //           // If the user isn't signed in already then show the homepage.
-    //           // To create app bars and materials and such use Scaffold.
-    //           // Put ur mouse cursor over it to see what u can add to it.
-    //
-    //             ),
-    //           );
-    //         }
-
-    //       // Otherwise show a visual indicator 'when the connection is slow'.
-    //       default:
-    //         return const CircularProgressIndicator();
-    //     }
-    //   },
-    // );
   }
 }

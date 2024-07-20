@@ -46,73 +46,104 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
         }
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
-        body: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  'assets/images/forgotPass.png',
-                  height: 180,
-                ),
-                Container(
-                  margin: const EdgeInsets.fromLTRB(0, 20, 0, 10),
-                  child: const Text(
-                    'Enter your email to reset your password!',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontFamily: 'Georgia',
-                    ),
-                  ),
-                ),
-                Container(
-                  width: 450,
-                  margin: const EdgeInsets.fromLTRB(10, 25, 10, 15),
-                  child: TextField(
-                    autofocus: true,
-                    keyboardType: TextInputType.emailAddress,
-                    enableSuggestions: false,
-                    autocorrect: false,
-                    controller: _controller,
-                    decoration: const InputDecoration(
-                      hintText: 'Enter Email ',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10.0),
+        body: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/bg.png'),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Align(
+            alignment: Alignment.center,
+            child: Container(
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(204, 255, 255, 255),
+                borderRadius: BorderRadius.circular(100),
+                boxShadow: [
+                  BoxShadow(
+                    color:
+                        const Color.fromARGB(255, 97, 98, 100).withOpacity(0.3),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: const Offset(5, 5),
+                  )
+                ],
+              ),
+              width: 630,
+              height: 650,
+              child: Center(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/images/forgotPass.png',
+                        height: 180,
+                      ),
+                      Container(
+                        margin: const EdgeInsets.fromLTRB(0, 20, 0, 10),
+                        child: const Text(
+                          'Enter your email to reset your password!',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontFamily: 'Georgia',
+                          ),
                         ),
                       ),
-                      suffixIcon: Icon(
-                        Icons.email,
+                      Container(
+                        width: 450,
+                        margin: const EdgeInsets.fromLTRB(10, 25, 10, 15),
+                        child: TextField(
+                          autofocus: true,
+                          keyboardType: TextInputType.emailAddress,
+                          enableSuggestions: false,
+                          autocorrect: false,
+                          controller: _controller,
+                          decoration: const InputDecoration(
+                            hintText: 'Enter Email ',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10.0),
+                              ),
+                            ),
+                            suffixIcon: Icon(
+                              Icons.email,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+                      Container(
+                        margin: const EdgeInsets.all(25),
+                        child: TextButton(
+                          onPressed: () {
+                            String email = _controller.text;
+                            context
+                                .read<AuthBloc>()
+                                .add(AuthEventForgotPassword(email: email));
+                          },
+                          style: TextButton.styleFrom(
+                            backgroundColor:
+                                const Color.fromARGB(255, 149, 54, 228),
+                            padding: const EdgeInsets.fromLTRB(50, 15, 50, 15),
+                          ),
+                          child: const Text(
+                            'Send password reset. 📨',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          context.read<AuthBloc>().add(const AuthEventLogOut());
+                        },
+                        child: const Text('Back to login page. 🔙'),
+                      ),
+                    ],
                   ),
                 ),
-                TextButton(
-                  onPressed: () {
-                    String email = _controller.text;
-                    context
-                        .read<AuthBloc>()
-                        .add(AuthEventForgotPassword(email: email));
-                  },
-                  style: TextButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 149, 54, 228),
-                    padding: const EdgeInsets.fromLTRB(50, 15, 50, 15),
-                  ),
-                  child: const Text(
-                    'Send password reset. 📨',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    context.read<AuthBloc>().add(const AuthEventLogOut());
-                  },
-                  child: const Text('Back to login page. 🔙'),
-                ),
-              ],
+              ),
             ),
           ),
         ),
