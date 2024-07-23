@@ -60,12 +60,13 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                 children: [
                   Image.asset(
                     'assets/images/forgotPass.png',
-                    height: 180,
+                    height: 150,
                   ),
                   Container(
                     margin: const EdgeInsets.fromLTRB(0, 20, 0, 10),
                     child: const Text(
                       'Enter your email to reset your password!',
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 24,
                         fontFamily: 'Georgia',

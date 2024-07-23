@@ -34,9 +34,10 @@ class _EmailVerifyViewState extends State<EmailVerifyView> {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.fromLTRB(0, 0, 0, 55),
+                margin: const EdgeInsets.fromLTRB(0, 0, 0, 30),
                 child: const Text(
                   'We have sent you an email verification!',
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 26,
                     fontFamily: 'Georgia',
@@ -54,10 +55,10 @@ class _EmailVerifyViewState extends State<EmailVerifyView> {
                   },
                   style: TextButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 179, 135, 137),
-                    padding: const EdgeInsets.fromLTRB(100, 15, 100, 15),
+                    padding: const EdgeInsets.fromLTRB(70, 15, 70, 15),
                   ),
                   child: const Text(
-                    'Click here to resend the email.. 📨',
+                    'Click here to resend the email... 📨',
                     style: TextStyle(
                       color: Colors.white,
                     ),
