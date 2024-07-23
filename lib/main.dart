@@ -20,7 +20,7 @@ void main() {
 
       theme: ThemeData(
         // Main theme of the app.
-        primarySwatch: Colors.deepPurple,
+        primarySwatch: Colors.red,
       ),
 
       // Choose and run the homepage.

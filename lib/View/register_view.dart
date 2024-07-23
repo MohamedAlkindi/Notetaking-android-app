@@ -95,178 +95,223 @@ class _RegisterViewState extends State<RegisterView> {
               fit: BoxFit.cover,
             ),
           ),
-          child: Align(
-            alignment: Alignment.center,
-            child: Container(
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(204, 255, 255, 255),
-                borderRadius: BorderRadius.circular(100),
-                boxShadow: [
-                  BoxShadow(
-                    color:
-                        const Color.fromARGB(255, 97, 98, 100).withOpacity(0.3),
-                    spreadRadius: 2,
-                    blurRadius: 5,
-                    offset: const Offset(5, 5),
-                  )
-                ],
-              ),
-              width: 630,
-              height: 650,
-              child: Center(
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'assets/images/register.png',
-                        height: 180,
-                      ),
-                      Container(
-                        margin: const EdgeInsets.fromLTRB(0, 20, 0, 10),
-                        child: const Text(
-                          'Hello there!',
-                          style: TextStyle(
-                            fontSize: 26,
-                            fontFamily: 'Georgia',
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: 450,
-                        margin: const EdgeInsets.fromLTRB(10, 25, 10, 15),
-
-                        // Email textfield.
-                        child: TextField(
-                          autofocus: true,
-                          keyboardType: TextInputType
-                              .emailAddress, // Adds the '@' symbol on keyboard.
-                          enableSuggestions: false,
-                          autocorrect: false,
-                          controller: _email,
-                          // Adding a placeholder..
-                          decoration: const InputDecoration(
-                            hintText: 'Enter Email ',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10.0),
-                              ),
-                            ),
-                            suffixIcon: Icon(
-                              Icons.email,
-                            ),
-                          ),
-                          textInputAction: TextInputAction.next,
-                          onSubmitted: (term) {
-                            FocusScope.of(context).requestFocus(_focusNode1);
-                          },
-                        ),
-                      ),
-
-                      // Password textField.
-                      Container(
-                        width: 450,
-                        margin: const EdgeInsets.fromLTRB(10, 0, 10, 15),
-                        // Password textbox.
-                        child: TextField(
-                          obscureText: _isObsecure,
-                          enableSuggestions: false,
-                          autocorrect: false,
-                          controller: _password,
-                          decoration: InputDecoration(
-                            hintText: 'Enter Password ',
-                            border: const OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10.0),
-                              ),
-                            ),
-                            suffixIcon: IconButton(
-                              onPressed: () {
-                                setState(() => _isObsecure = !_isObsecure);
-                              },
-                              icon: const Icon(
-                                Icons.remove_red_eye,
-                              ),
-                            ),
-                          ),
-                          focusNode: _focusNode1,
-                          textInputAction: TextInputAction.next,
-                          onSubmitted: (term) {
-                            FocusScope.of(context).requestFocus(_focusNode2);
-                          },
-                        ),
-                      ),
-
-                      // Repeat pass textField.
-                      Container(
-                        margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                        width: 450,
-                        child: TextField(
-                          obscureText: _isObsecure,
-                          enableSuggestions: false,
-                          controller: _repeatPassword,
-                          decoration: InputDecoration(
-                            hintText: 'Repeat Password ',
-                            border: const OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10.0),
-                              ),
-                            ),
-                            suffixIcon: IconButton(
-                              onPressed: () {
-                                setState(() => _isObsecure = !_isObsecure);
-                              },
-                              icon: const Icon(
-                                Icons.remove_red_eye,
-                              ),
-                            ),
-                          ),
-                          focusNode: _focusNode2,
-                          textInputAction: TextInputAction.done,
-                        ),
-                      ),
-
-                      // Register button.
-                      Container(
-                        margin: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                        child: TextButton(
-                          onPressed: () async {
-                            final inputEmail = _email.text;
-                            final inputPassword = _password.text;
-                            final inputRepeatPassword = _repeatPassword.text;
-                            context.read<AuthBloc>().add(AuthEventRegister(
-                                  email: inputEmail,
-                                  password: inputPassword,
-                                  repeatPassword: inputRepeatPassword,
-                                ));
-                          },
-                          style: TextButton.styleFrom(
-                            backgroundColor:
-                                const Color.fromARGB(255, 149, 54, 228),
-                            padding:
-                                const EdgeInsets.fromLTRB(100, 15, 100, 15),
-                          ),
-                          child: const Text(
-                            'Register',
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-
-                      // Login view button.
-                      TextButton(
-                        onPressed: () {
-                          context.read<AuthBloc>().add(const AuthEventLogOut());
-                        },
-                        child: const Text(
-                          'Already a user? Click here! 🖐🏼',
-                        ),
-                      ),
-                    ],
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/images/register.png',
+                    height: 155,
                   ),
-                ),
+                  Container(
+                    margin: const EdgeInsets.fromLTRB(0, 20, 0, 10),
+                    child: const Text(
+                      'Hello there!',
+                      style: TextStyle(
+                        fontSize: 26,
+                        fontFamily: 'Georgia',
+                        color: Color.fromARGB(255, 73, 70, 70),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: 450,
+                    margin: const EdgeInsets.fromLTRB(10, 20, 10, 15),
+
+                    // Email textfield.
+                    child: TextField(
+                      style: const TextStyle(
+                        color: Color.fromARGB(255, 73, 70, 70),
+                        fontSize: 18,
+                      ),
+                      autofocus: true,
+                      keyboardType: TextInputType
+                          .emailAddress, // Adds the '@' symbol on keyboard.
+                      enableSuggestions: false,
+                      autocorrect: false,
+                      controller: _email,
+                      // Adding a placeholder..
+                      decoration: const InputDecoration(
+                        hintText: 'Enter Email ',
+                        hintStyle: TextStyle(
+                          color: Color.fromARGB(255, 100, 99, 99),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10.0),
+                          ),
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 131, 58, 66),
+                            width: 0.7,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 131, 58, 66),
+                            width: 0.5,
+                          ),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10.0),
+                          ),
+                        ),
+                        suffixIcon: Icon(
+                          Icons.email,
+                          color: Color.fromARGB(255, 73, 70, 70),
+                        ),
+                      ),
+                      textInputAction: TextInputAction.next,
+                      onSubmitted: (term) {
+                        FocusScope.of(context).requestFocus(_focusNode1);
+                      },
+                    ),
+                  ),
+
+                  // Password textField.
+                  Container(
+                    width: 450,
+                    margin: const EdgeInsets.fromLTRB(10, 0, 10, 15),
+                    // Password textbox.
+                    child: TextField(
+                      style: const TextStyle(
+                        color: Color.fromARGB(255, 73, 70, 70),
+                        fontSize: 18,
+                      ),
+                      obscureText: _isObsecure,
+                      enableSuggestions: false,
+                      autocorrect: false,
+                      controller: _password,
+                      decoration: InputDecoration(
+                        hintText: 'Enter Password ',
+                        hintStyle: const TextStyle(
+                          color: Color.fromARGB(255, 100, 99, 99),
+                        ),
+                        enabledBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10.0),
+                          ),
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 131, 58, 66),
+                            width: 0.7,
+                          ),
+                        ),
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 131, 58, 66),
+                            width: 0.5,
+                          ),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10.0),
+                          ),
+                        ),
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() => _isObsecure = !_isObsecure);
+                          },
+                          icon: const Icon(
+                            Icons.remove_red_eye,
+                          ),
+                        ),
+                      ),
+                      focusNode: _focusNode1,
+                      textInputAction: TextInputAction.next,
+                      onSubmitted: (term) {
+                        FocusScope.of(context).requestFocus(_focusNode2);
+                      },
+                    ),
+                  ),
+
+                  // Repeat pass textField.
+                  Container(
+                    margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    width: 450,
+                    child: TextField(
+                      style: const TextStyle(
+                        color: Color.fromARGB(255, 73, 70, 70),
+                        fontSize: 18,
+                      ),
+                      obscureText: _isObsecure,
+                      enableSuggestions: false,
+                      controller: _repeatPassword,
+                      decoration: InputDecoration(
+                        hintText: 'Repeat Password ',
+                        hintStyle: const TextStyle(
+                          color: Color.fromARGB(255, 100, 99, 99),
+                        ),
+                        enabledBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10.0),
+                          ),
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 131, 58, 66),
+                            width: 0.7,
+                          ),
+                        ),
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 131, 58, 66),
+                            width: 0.5,
+                          ),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10.0),
+                          ),
+                        ),
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() => _isObsecure = !_isObsecure);
+                          },
+                          icon: const Icon(
+                            Icons.remove_red_eye,
+                          ),
+                        ),
+                      ),
+                      focusNode: _focusNode2,
+                      textInputAction: TextInputAction.done,
+                    ),
+                  ),
+
+                  // Register button.
+                  Container(
+                    margin: const EdgeInsets.fromLTRB(0, 25, 0, 15),
+                    child: TextButton(
+                      onPressed: () async {
+                        final inputEmail = _email.text;
+                        final inputPassword = _password.text;
+                        final inputRepeatPassword = _repeatPassword.text;
+                        context.read<AuthBloc>().add(AuthEventRegister(
+                              email: inputEmail,
+                              password: inputPassword,
+                              repeatPassword: inputRepeatPassword,
+                            ));
+                      },
+                      style: TextButton.styleFrom(
+                        backgroundColor:
+                            const Color.fromARGB(255, 107, 98, 187),
+                        padding: const EdgeInsets.fromLTRB(90, 15, 90, 15),
+                      ),
+                      child: const Text(
+                        'Register',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  // Login view button.
+                  TextButton(
+                    onPressed: () {
+                      context.read<AuthBloc>().add(const AuthEventLogOut());
+                    },
+                    child: const Text(
+                      'Already a user? Click here! 🖐🏼',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Color.fromARGB(255, 73, 70, 70),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
