@@ -30,6 +30,8 @@ abstract class AuthProvider {
   Future<void> sendEmailVerification();
 
   Future<void> sendPasswordReset({required String email});
+
+  String? getUserEmail();
 }
 
 // Add more auth providers, facebook, apple google... logins and register..

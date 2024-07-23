@@ -56,7 +56,7 @@ class FirebaseAuthProvider implements AuthProvider {
         throw AuthExceptionEmailAlreadyInUse();
       } else if (e.code == 'weak-password') {
         throw AuthExceptionWeakPassword();
-      } else if (e.code == 'network-error') {
+      } else if (e.code == 'network-request-failed') {
         throw NetworkExceptions;
       } else {
         throw GenericAuthException();
@@ -144,5 +144,14 @@ class FirebaseAuthProvider implements AuthProvider {
           throw GenericAuthException();
       }
     }
+  }
+
+  @override
+  String? getUserEmail() {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      return user.email;
+    }
+    return null;
   }
 }

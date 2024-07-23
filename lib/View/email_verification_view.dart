@@ -1,3 +1,4 @@
+import 'package:Notetaking/services/auth/auth_service.dart';
 import 'package:Notetaking/services/auth/bloc/auth_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,7 +12,12 @@ class EmailVerifyView extends StatefulWidget {
   State<EmailVerifyView> createState() => _EmailVerifyViewState();
 }
 
+// change later to use bloc.
+AuthService s = AuthService.fireBase();
+
 class _EmailVerifyViewState extends State<EmailVerifyView> {
+  final user = s.getUserEmail();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,10 +41,10 @@ class _EmailVerifyViewState extends State<EmailVerifyView> {
               ),
               Container(
                 margin: const EdgeInsets.fromLTRB(0, 0, 0, 30),
-                child: const Text(
-                  'We have sent you an email verification!',
+                child: Text(
+                  'We have sent you an email verification to your email "$user!"',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 26,
                     fontFamily: 'Georgia',
                     color: Color.fromARGB(255, 73, 70, 70),
