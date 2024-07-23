@@ -21,6 +21,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     on<AuthEventRegister>(
       (event, emit) async {
+        emit(
+          const AuthStateLoggedOut(
+              exception: null,
+              isLoading: true,
+              loadingText: 'Please wait while we are signing you up...'),
+        );
         final email = event.email;
         final password = event.password;
         final repeatPassword = event.repeatPassword;
@@ -43,33 +49,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       },
     );
 
-    on<AuthEventInitialize>(
-      (event, emit) async {
-        await provider.initializer();
-        final user = provider.currentUser;
-        if (user == null) {
-          emit(const AuthStateBlank());
-        } else if (!user.isEmailVerified) {
-          emit(const AuthStateNeedsVerification(isLoading: false));
-        } else {
-          emit(
-            AuthStateLoggedIn(
-              user: user,
-              isLoading: false,
-            ),
-          );
-        }
-      },
-    );
-
-    // login.
+// login.
     on<AuthEventLogIn>(
       (event, emit) async {
         emit(
           const AuthStateLoggedOut(
               exception: null,
               isLoading: true,
-              loadingText: 'Please wait while we logging you in...'),
+              loadingText: 'Please wait while we are logging you in...'),
         );
         final email = event.email;
         final password = event.password;
@@ -105,6 +92,24 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(
             AuthStateLoggedOut(
               exception: e,
+              isLoading: false,
+            ),
+          );
+        }
+      },
+    );
+    on<AuthEventInitialize>(
+      (event, emit) async {
+        await provider.initializer();
+        final user = provider.currentUser;
+        if (user == null) {
+          emit(const AuthStateBlank());
+        } else if (!user.isEmailVerified) {
+          emit(const AuthStateNeedsVerification(isLoading: false));
+        } else {
+          emit(
+            AuthStateLoggedIn(
+              user: user,
               isLoading: false,
             ),
           );
