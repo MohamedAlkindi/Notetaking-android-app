@@ -80,6 +80,7 @@ class _EmailVerifyViewState extends State<EmailVerifyView> {
                   child: const Text(
                     'Go to login page.',
                     style: TextStyle(
+                      
                       color: Color.fromARGB(255, 73, 70, 70),
                     ),
                   ),

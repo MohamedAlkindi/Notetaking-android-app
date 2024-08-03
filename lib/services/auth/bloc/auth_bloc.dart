@@ -22,6 +22,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthEventRegister>(
       (event, emit) async {
         emit(
+          // naming is trash so try to figure it out each time...
+          // when the user presses on register button it triggeres an event to register.
+          // first thing it does is show loading screen, and then get the text fields value.
+          // lastly create the user and send email verification or show an error...
           const AuthStateLoggedOut(
               exception: null,
               isLoading: true,
@@ -68,13 +72,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           );
           if (!user.isEmailVerified) {
             emit(
+              // stop the loading screen.
               const AuthStateLoggedOut(
                 exception: null,
                 isLoading: false,
               ),
             );
-            emit(const AuthStateNeedsVerification(isLoading: false));
+            emit(
+              // then throw user needs verification state.
+              const AuthStateNeedsVerification(
+                isLoading: false,
+              ),
+            );
           } else {
+            // if the user is verified, stop the loading screen.
             emit(
               const AuthStateLoggedOut(
                 exception: null,
@@ -82,6 +93,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               ),
             );
             emit(
+              // and log the user in.
               AuthStateLoggedIn(
                 user: user,
                 isLoading: false,
@@ -90,6 +102,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           }
         } on Exception catch (e) {
           emit(
+            // on any exception stop the loading screen and throw the exception.
             AuthStateLoggedOut(
               exception: e,
               isLoading: false,

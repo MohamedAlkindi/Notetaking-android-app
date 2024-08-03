@@ -1,6 +1,7 @@
 // Allow the caller to dismiss a dialog
 import 'package:flutter/material.dart';
 
+// typedef can sometimes refer to just an alias of a function, and sometimes it can be more complicated and means other things...
 typedef CloseDialog = void Function();
 
 CloseDialog showLoadingDialog({

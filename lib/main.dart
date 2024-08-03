@@ -24,7 +24,7 @@ void main() {
       ),
 
       // Choose and run the homepage.
-      // Using AuthBloc functionality in the main.dart
+      // Using AuthBloc functionality in the main.dart initialize it and inject the .
       home: BlocProvider<AuthBloc>(
         create: (context) => AuthBloc(FirebaseAuthProvider()),
         child: const HomePage(),
