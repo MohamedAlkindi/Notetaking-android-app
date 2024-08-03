@@ -18,7 +18,7 @@ class AuthStateUninitialized extends AuthState {
       : super(isLoading: isLoading);
 }
 
-// Login state that has the user.
+// Login state that has the user, already logged in.
 class AuthStateLoggedIn extends AuthState {
   final AuthUser user;
   const AuthStateLoggedIn({required this.user, required bool isLoading})
@@ -66,6 +66,7 @@ class AuthStateForgotPassword extends AuthState {
       : super(isLoading: isLoading);
 }
 
+// just about to login
 class AuthStateLoggingIn extends AuthState {
   const AuthStateLoggingIn() : super(isLoading: false);
 }
