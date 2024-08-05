@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart' show User;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 // It means that this class and it's subclasses internals won't be changed upon initialization.
