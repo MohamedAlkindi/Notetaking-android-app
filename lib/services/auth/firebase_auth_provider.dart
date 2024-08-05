@@ -107,9 +107,18 @@ class FirebaseAuthProvider implements AuthProvider {
   Future<void> sendEmailVerification() async {
     final user = currentUser;
 
-    user != null
-        ? await user.sendEmailVerification()
-        : throw UserNotLoggedInAuthExceptions();
+    if (user != null) {
+      await user.sendEmailVerification();
+    } else {
+      throw UserNotLoggedInAuthExceptions();
+    }
+  }
+
+  // Must initialize Firebase before using it, and must use 'async' in function declaration and 'await' when calling the initializeApp, because it's a Future<> function!
+  @override
+  Future<void> initializer() async {
+    await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform);
   }
 
   @override
@@ -129,7 +138,10 @@ class FirebaseAuthProvider implements AuthProvider {
 
   @override
   String? getUserEmail() {
-    final user = currentUser;
-    return user?.email;
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      return user.email;
+    }
+    return null;
   }
 }
