@@ -1,5 +1,6 @@
 import 'package:Notetaking/services/auth/auth_service.dart';
 import 'package:Notetaking/services/auth/bloc/auth_event.dart';
+import 'package:Notetaking/styles/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,12 +23,7 @@ class _EmailVerifyViewState extends State<EmailVerifyView> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/bg.png'),
-            fit: BoxFit.cover,
-          ),
-        ),
+        decoration: AppStyle.backgroundImg,
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -39,18 +35,12 @@ class _EmailVerifyViewState extends State<EmailVerifyView> {
                   height: 210,
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.fromLTRB(0, 0, 0, 30),
-                child: Text(
+              AppStyle.mainTextContainer(
                   'We have sent you an email verification to your email "$user!"',
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 26,
-                    fontFamily: 'Georgia',
-                    color: Color.fromARGB(255, 73, 70, 70),
-                  ),
-                ),
-              ),
+                  0,
+                  0,
+                  0,
+                  30),
               Container(
                 margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                 child: TextButton(
@@ -63,12 +53,8 @@ class _EmailVerifyViewState extends State<EmailVerifyView> {
                     backgroundColor: const Color.fromARGB(255, 179, 135, 137),
                     padding: const EdgeInsets.fromLTRB(70, 15, 70, 15),
                   ),
-                  child: const Text(
-                    'Click here to resend the email... 📨',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
+                  child: AppStyle.secondButtonTextAndStyle(
+                      'Click here to resend the email... 📨'),
                 ),
               ),
               Container(
@@ -77,13 +63,7 @@ class _EmailVerifyViewState extends State<EmailVerifyView> {
                   onPressed: () async {
                     context.read<AuthBloc>().add(const AuthEventLogOut());
                   },
-                  child: const Text(
-                    'Go to login page.',
-                    style: TextStyle(
-                      
-                      color: Color.fromARGB(255, 73, 70, 70),
-                    ),
-                  ),
+                  child: AppStyle.secondButtonTextAndStyle('Go to login page.'),
                 ),
               ),
             ],

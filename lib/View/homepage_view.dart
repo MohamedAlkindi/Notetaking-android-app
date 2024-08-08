@@ -5,6 +5,7 @@ import 'package:Notetaking/View/register_view.dart';
 import 'package:Notetaking/helpers/loading/loading_screen.dart';
 import 'package:Notetaking/services/auth/bloc/auth_event.dart';
 import 'package:Notetaking/services/auth/bloc/auth_state.dart';
+import 'package:Notetaking/styles/style.dart';
 import 'package:flutter/material.dart';
 import 'package:Notetaking/View/email_verification_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,12 +36,7 @@ class HomePage extends StatelessWidget {
         } else {
           return Scaffold(
             body: Container(
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/images/bg.png'),
-                  fit: BoxFit.cover,
-                ),
-              ),
+              decoration: AppStyle.backgroundImg,
               child: Center(
                 // To make the column scrollable.
                 child: SingleChildScrollView(
@@ -51,18 +47,8 @@ class HomePage extends StatelessWidget {
                         'assets/images/icon.png',
                         height: 180,
                       ),
-                      Container(
-                        margin: const EdgeInsets.fromLTRB(6, 20, 6, 10),
-                        child: const Text(
-                          '\nYour Thoughts, Our Canvas. 😉\n',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 26,
-                            fontFamily: 'Georgia',
-                            color: Color.fromARGB(255, 73, 70, 70),
-                          ),
-                        ),
-                      ),
+                      AppStyle.mainTextContainer(
+                          '\nYour Thoughts, Our Canvas. 😉\n', 0, 20, 0, 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

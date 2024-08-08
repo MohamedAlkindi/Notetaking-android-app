@@ -1,6 +1,7 @@
 import 'package:Notetaking/services/auth/bloc/auth_bloc.dart';
 import 'package:Notetaking/services/auth/bloc/auth_event.dart';
 import 'package:Notetaking/services/auth/bloc/auth_state.dart';
+import 'package:Notetaking/styles/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../Dialogs/error_dialog.dart';
@@ -20,7 +21,7 @@ class _LoginViewState extends State<LoginView> {
   late final TextEditingController _email;
   late final TextEditingController _password;
 
-  late FocusNode _myFocusNote;
+  late FocusNode _focusNode1;
 
   bool _isObsecure = true;
   // But must create an initializer and a disposer manually.
@@ -28,7 +29,7 @@ class _LoginViewState extends State<LoginView> {
   void initState() {
     _email = TextEditingController();
     _password = TextEditingController();
-    _myFocusNote = FocusNode();
+    _focusNode1 = FocusNode();
     super.initState();
   }
 
@@ -36,7 +37,7 @@ class _LoginViewState extends State<LoginView> {
   void dispose() {
     _email.dispose();
     _password.dispose();
-    _myFocusNote.dispose();
+    _focusNode1.dispose();
     super.dispose();
   }
 
@@ -71,12 +72,7 @@ class _LoginViewState extends State<LoginView> {
       },
       child: Scaffold(
         body: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/images/bg.png'),
-              fit: BoxFit.cover,
-            ),
-          ),
+          decoration: AppStyle.backgroundImg,
           child: Center(
             // To make the column scrollable.
             child: SingleChildScrollView(
@@ -87,116 +83,33 @@ class _LoginViewState extends State<LoginView> {
                     'assets/images/login.png',
                     height: 140,
                   ),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(0, 20, 0, 10),
-                    child: const Text(
-                      'Welcome Back!',
-                      style: TextStyle(
-                        fontSize: 26,
-                        fontFamily: 'Georgia',
-                        color: Color.fromARGB(255, 73, 70, 70),
-                      ),
-                    ),
-                  ),
-                  // Creating 2 'textboxes' one for email and the second for password, each in their own 'Container' to put some styling to them.
-                  // Email textfield.
-                  Container(
-                    width: 450,
-                    margin: const EdgeInsets.fromLTRB(10, 20, 10, 15),
-                    child: TextField(
-                      style: const TextStyle(
-                        color: Color.fromARGB(255, 73, 70, 70),
-                        fontSize: 18,
-                      ),
-                      autofocus: true,
-                      keyboardType: TextInputType.emailAddress,
-                      enableSuggestions: false,
-                      autocorrect: false,
-                      controller: _email,
-                      decoration: const InputDecoration(
-                        hintText: 'Enter Email ',
-                        hintStyle: TextStyle(
-                          color: Color.fromARGB(255, 100, 99, 99),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10.0),
-                          ),
-                          borderSide: BorderSide(
-                              color: Color.fromARGB(255, 131, 58, 66),
-                              width: 0.7),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color.fromARGB(255, 131, 58, 66),
-                            width: 0.5,
-                          ),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10.0),
-                          ),
-                        ),
-                        suffixIcon: Icon(
-                          Icons.email,
-                          color: Color.fromARGB(255, 73, 70, 70),
-                        ),
-                      ),
-                      textInputAction: TextInputAction.next,
-                      onSubmitted: (term) {
-                        FocusScope.of(context).requestFocus(_myFocusNote);
-                      },
-                    ),
+                  AppStyle.mainTextContainer('Welcome Back!', 0, 20, 0, 10),
+
+                  // email container and textField.
+                  AppStyle.emailContainer(
+                    context: context,
+                    focuseNode: _focusNode1,
+                    email: _email,
                   ),
 
                   // 'SizedBox' is more suitable if u won't use properties of 'Container'. Otherwise use 'Container' as it has more properties to work with.
+
                   // Password textfield.
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    width: 450,
-                    child: TextField(
-                      style: const TextStyle(
-                        color: Color.fromARGB(255, 73, 70, 70),
-                        fontSize: 18,
-                      ),
-                      obscureText: _isObsecure,
-                      enableSuggestions: false,
-                      autocorrect: false,
-                      controller: _password,
-                      decoration: InputDecoration(
-                        hintText: 'Enter Password ',
-                        hintStyle: const TextStyle(
-                          color: Color.fromARGB(255, 100, 99, 99),
-                        ),
-                        enabledBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10.0),
-                          ),
-                          borderSide: BorderSide(
-                            color: Color.fromARGB(255, 131, 58, 66),
-                            width: 0.7,
-                          ),
-                        ),
-                        focusedBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color.fromARGB(255, 131, 58, 66),
-                            width: 0.5,
-                          ),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10.0),
-                          ),
-                        ),
-                        suffixIcon: IconButton(
-                          color: const Color.fromARGB(255, 73, 70, 70),
-                          onPressed: () {
-                            setState(() => _isObsecure = !_isObsecure);
-                          },
-                          icon: const Icon(
-                            Icons.remove_red_eye,
-                          ),
-                        ),
-                      ),
-                      focusNode: _myFocusNote,
-                      textInputAction: TextInputAction.done,
-                    ),
+                  AppStyle.passwordContainer(
+                    context: context,
+                    textFieldText: 'Enter Password',
+                    isObsecureText: _isObsecure,
+                    thisFocusNode: _focusNode1,
+                    nextFocusNode: null,
+                    passwordController: _password,
+                    textInputActionValue: TextInputAction.done,
+                    togglePasswordVisibility: () {
+                      setState(
+                        () {
+                          _isObsecure = !_isObsecure;
+                        },
+                      );
+                    },
                   ),
 
                   // Login button.
@@ -231,19 +144,13 @@ class _LoginViewState extends State<LoginView> {
 
                   // Register view button.
                   TextButton(
-                    onPressed: () {
-                      context
-                          .read<AuthBloc>()
-                          .add(const AuthEventShouldRegister());
-                    },
-                    child: const Text(
-                      'Not registered? Click here! 🖐🏼',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Color.fromARGB(255, 73, 70, 70),
-                      ),
-                    ),
-                  ),
+                      onPressed: () {
+                        context
+                            .read<AuthBloc>()
+                            .add(const AuthEventShouldRegister());
+                      },
+                      child: AppStyle.secondButtonTextAndStyle(
+                          'Not registered? Click here! 🖐🏼')),
                   TextButton(
                     onPressed: () {
                       context.read<AuthBloc>().add(
