@@ -7,7 +7,7 @@ class AppStyle {
     return Container(
       margin: EdgeInsets.fromLTRB(lM, tM, rM, bM),
       child: Text(
-        '$containerText!',
+        containerText,
         style: const TextStyle(
           fontSize: 26,
           fontFamily: 'Georgia',

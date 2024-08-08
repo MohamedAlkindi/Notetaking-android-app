@@ -113,7 +113,7 @@ class FirebaseAuthProvider implements AuthProvider {
       throw UserNotLoggedInAuthExceptions();
     }
   }
-  
+
   @override
   Future<void> sendPasswordReset({
     required String email,
